@@ -33,24 +33,48 @@ export const setUserFail = (error) => {
         error: error,
     }
 }
+export const authUserFail = (error) => {
+    return {
+        type: actionTypes.AUTH_USER_FAIL,
+        error: error,
+    };
+};
 export const setUserDetails = (userData) => {
     return dispatch => {
-        axios.post('https://test-task-2ae5b.firebaseio.com/users.json', userData)
+        axios.post('https://test-task-2ae5b.firebaseio.com/userdetails.json', userData)
         .then(response=> {
-            dispatch(setUserSuccess(response.data.name));
+            //dispatch(setUserSuccess(response.data.name));
+            //localStorage.setItem('name',response.data.name);
+            console.log('All set');
         })
         .catch(error => {
             dispatch(setUserFail(error));
         });
     };
 }
+export const getUserDetails = (token, email) => {
+    return dispatch => {
+        const queryParams = '?auth=' + token + '&orderBy="email"&equalTo="' + email + '"';
+        axios.get('https://test-task-2ae5b.firebaseio.com/users.json' + queryParams)
+        .then(response => {
+            console.log(response);
+        })
+        .catch(err=> {
+            console.log(err);
+        })
+    };
+};
 export const signUp = (email, password, name, username, sex) => {
     return dispatch => {
         dispatch(authStart());
-        const orderData = {
-            email: email,
+        const userInfo = {
+            name: name,
             username: username,
             sex: sex,
+        };
+        const orderData = {
+            userInfo: userInfo ,
+            email: email,
         }
         const authData = {
             email: email,
@@ -93,6 +117,7 @@ export const login = (email, password) => {
             localStorage.setItem('userId', response.data.localId);
             dispatch(authSuccess(response.data.idToken, response.data.localId));
             dispatch(checkAuthTimeout(response.data.expiresIn));
+            dispatch(getUserDetails(response.data.idToken, email));
         })
         .catch(err => {
             console.log(err);

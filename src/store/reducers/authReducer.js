@@ -9,7 +9,7 @@ const initialState = {
     userId: null,
     error: null,
 }
-const authStart = (state = initialState, action) => {
+const authStart = (state, action) => {
     return updateObject(state, {
         error: null,
     });

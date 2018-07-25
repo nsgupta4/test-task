@@ -1,12 +1,17 @@
 import React, { Component } from 'react';
 import * as actions from '../../store/actions';
 import { connect } from 'react-redux';
+import {Redirect} from 'react-router-dom';
 import { Field, reduxForm, } from 'redux-form'
 class Signup extends Component {
     state ={
         isSignup: true,
     }
     render(){
+        let authRedirect = null;
+        if(this.props.isAuthenticated){
+            authRedirect = <Redirect to="/dashboard" />
+        }
         let errorMessage = null;
         if(this.props.error){
             errorMessage = (
@@ -17,7 +22,10 @@ class Signup extends Component {
       this.props.onSignup(values.email, values.password, values.name, values.username, values.sex);
   };
   const { handleSubmit, pristine,  submitting } = this.props
-  return ( <div> {errorMessage}
+  return ( 
+      <div> 
+      {authRedirect}
+      {errorMessage}
     <form onSubmit={handleSubmit(g)}>
       <div>
         <label>Name</label>
@@ -118,6 +126,12 @@ SimpleForm = connect(state => {
 
 export default SimpleForm;
 */
+const mapStateToProps = state => {
+    return {
+        isAuthenticated: state.login.token !==null,
+        error: state.login.error,
+    }
+}
 
 const mapDispatchToProps = dispatch => {
     return {
@@ -125,6 +139,6 @@ const mapDispatchToProps = dispatch => {
       };
     };
 
-    export default connect(null,mapDispatchToProps)(Signup = reduxForm({
+    export default connect(mapStateToProps,mapDispatchToProps)(Signup = reduxForm({
         form: 'simple' // a unique identifier for this form
       })(Signup));

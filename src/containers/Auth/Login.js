@@ -7,7 +7,7 @@ class Login extends Component {
     render(){
         let authRedirect = null;
         if(this.props.isAuthenticated){
-            authRedirect = <Redirect to="/" />
+            authRedirect = <Redirect to="/dashboard" />
         }
         let errorMessage = null;
         if(this.props.error){
@@ -21,7 +21,6 @@ class Login extends Component {
   const { handleSubmit, pristine,  submitting } = this.props
   return ( <div> 
     {authRedirect} 
-    {errorMessage}
     <form onSubmit={handleSubmit(g)}>
       <div>
         <label>Email</label>
@@ -51,8 +50,10 @@ class Login extends Component {
         <button type="submit" disabled={pristine || submitting}>
           Login
         </button>
+        {errorMessage}
       </div>
     </form>
+    
 </div>  
 );
 }

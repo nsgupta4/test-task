@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import * as actions from '../../store/actions';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
 import { Field, reduxForm, } from 'redux-form'
-class Login extends Component {
+class Signup extends Component {
+    state ={
+        isSignup: true,
+    }
     render(){
-        let authRedirect = null;
-        if(this.props.isAuthenticated){
-            authRedirect = <Redirect to="/" />
-        }
         let errorMessage = null;
         if(this.props.error){
             errorMessage = (
@@ -16,13 +14,35 @@ class Login extends Component {
             );
         }
   const g = (values) =>{
-      this.props.onLogin(values.email, values.password);
+      this.props.onSignup(values.email, values.password, values.name, values.username, values.sex);
   };
   const { handleSubmit, pristine,  submitting } = this.props
-  return ( <div> 
-    {authRedirect} 
-    {errorMessage}
+  return ( <div> {errorMessage}
     <form onSubmit={handleSubmit(g)}>
+      <div>
+        <label>Name</label>
+        <div>
+          <Field
+            id="name"
+            name="name"
+            component="input"
+            type="text"
+            placeholder="Name"
+          />
+        </div>
+      </div>
+      <div>
+        <label>UserName</label>
+        <div>
+          <Field
+            id="username"
+            name="username"
+            component="input"
+            type="text"
+            placeholder="Name"
+          />
+        </div>
+      </div>
       <div>
         <label>Email</label>
         <div>
@@ -48,8 +68,31 @@ class Login extends Component {
         </div>
       </div>
       <div>
+        <label>Sex</label>
+        <div>
+          <label>
+            <Field
+              name="sex"
+              component="input"
+              type="radio"
+              value="male"
+            />{' '}
+            Male
+          </label>
+          <label>
+            <Field
+              name="sex"
+              component="input"
+              type="radio"
+              value="female"
+            />{' '}
+            Female
+          </label>
+        </div>
+      </div>
+      <div>
         <button type="submit" disabled={pristine || submitting}>
-          Login
+          SIGN UP
         </button>
       </div>
     </form>
@@ -76,18 +119,12 @@ SimpleForm = connect(state => {
 export default SimpleForm;
 */
 
-const mapStateToProps = state => {
-    return {
-        isAuthenticated: state.login.token !==null,
-        error: state.login.error,
-    }
-}
 const mapDispatchToProps = dispatch => {
     return {
-      onLogin: (email, password) => dispatch(actions.login(email, password)),
+      onSignup: (email, password, name, username, sex) => dispatch(actions.signUp(email, password, name, username, sex)),
       };
     };
 
-    export default connect(mapStateToProps, mapDispatchToProps)(Login = reduxForm({
+    export default connect(null,mapDispatchToProps)(Signup = reduxForm({
         form: 'simple' // a unique identifier for this form
-      })(Login));
+      })(Signup));

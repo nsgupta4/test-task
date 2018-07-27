@@ -3,9 +3,11 @@ export {
     login,
     logout,
     authCheckState,
+    getUserDetails
 } from './login';
 
 export {
     addPost,
-    fetchPost
+    fetchPost,
+    deletePost,
 } from './posts';

@@ -35,9 +35,9 @@ export const addPost = (token, postData) =>{
     };
 };
 
-export const fetchPost = (token, userId) => {
+export const fetchPost = (token) => {
     return dispatch => {
-        const queryParams = '?auth=' + token + '&orderBy="userId"&equalTo="' + userId + '"';
+        const queryParams = '?auth=' + token;
         axios.get('https://test-task-2ae5b.firebaseio.com/users.json' + queryParams)
         .then(response => {
          let fetchedPost = [];
@@ -54,16 +54,47 @@ export const fetchPost = (token, userId) => {
     });
     };
 };
-const fetchPostSuccess = (posts) => {
+export const fetchPostSuccess = (posts) => {
     return {
         type: actionTypes.FETCH_POST_SUCCESS,
         posts: posts,
         error: null,
     };
 };
-const fetchPostFail = (error) => {
+export const fetchPostFail = (error) => {
     return {
         type: actionTypes.FETCH_POST_FAIL,
         error: error,
     }
+}
+
+export const deletePostStart = () => {
+    return {
+        type: actionTypes.DELETE_POST, 
+    };
+};
+export const deletePostSuccess = (message) => {
+    return {
+        type: actionTypes.DELETE_POST_SUCCESS,
+        error: message, 
+    };
+};
+export const deletePostFail = (error) => {
+    return {
+        type: actionTypes.DELETE_POST_FAIL,
+        error: error, 
+    };
+};
+
+export const deletePost = (token, key, userId) => {
+    return dispatch => {
+        const queryParams =  key + '.json?auth=' + token;
+        axios.delete('https://test-task-2ae5b.firebaseio.com/users/' + queryParams)
+        .then(response => { 
+            dispatch(deletePostSuccess(response.data));
+        })
+        .catch(err=>{
+            dispatch(deletePostFail(err.response.data.error));
+    });
+    };
 }

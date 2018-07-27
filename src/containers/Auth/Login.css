@@ -1,0 +1,39 @@
+.Login{
+    margin: 20px auto;
+    width: 80%;
+    text-align: center;
+    box-shadow:  0 2px 3px #ccc;
+    border: 1px solid #eee;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+
+@media (min-width: 600px){
+    .Login{
+        width: 500px;
+    }
+}
+
+.Input{
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+}
+.Label{
+    font-weight: bold;
+    display: block;
+    margin-bottom: 8px;
+    padding: 10px;
+}
+.Button {
+    background-color: lightgreen;
+    border: none;
+    color: black;
+    outline: none;
+    cursor: pointer;
+    font: inherit;
+    padding: 10px;
+    margin: 10px;
+    font-weight: bold;
+}

@@ -14,8 +14,8 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 
 const rootReducer = combineReducers({
-    form:reduxFormReducer,
-    login:authReducer,
+    form: reduxFormReducer,
+    login: authReducer,
     fetch: postReducer,
 });
 

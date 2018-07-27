@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import * as actions from '../../store/actions';
 import { connect } from 'react-redux';
 import {Redirect} from 'react-router-dom';
-import { Field, reduxForm, } from 'redux-form'
+import { Field, reduxForm, } from 'redux-form';
+import classes from './Signup.css';
 class Signup extends Component {
     state ={
         isSignup: true,
@@ -23,14 +24,14 @@ class Signup extends Component {
   };
   const { handleSubmit, pristine,  submitting } = this.props
   return ( 
-      <div> 
+      <div className={classes.Signup}> 
       {authRedirect}
       {errorMessage}
     <form onSubmit={handleSubmit(g)}>
       <div>
-        <label>Name</label>
+        <label className={classes.Label}>Name</label>
         <div>
-          <Field
+          <Field className={classes.Input}
             id="name"
             name="name"
             component="input"
@@ -40,21 +41,21 @@ class Signup extends Component {
         </div>
       </div>
       <div>
-        <label>UserName</label>
+        <label className={classes.Label}>UserName</label>
         <div>
-          <Field
+          <Field className={classes.Input}
             id="username"
             name="username"
             component="input"
             type="text"
-            placeholder="Name"
+            placeholder="Username"
           />
         </div>
       </div>
       <div>
-        <label>Email</label>
+        <label className={classes.Label}>Email</label>
         <div>
-          <Field
+          <Field className={classes.Input}
             id="email"
             name="email"
             component="input"
@@ -64,9 +65,9 @@ class Signup extends Component {
         </div>
       </div>
       <div>
-        <label>Password</label>
+        <label className={classes.Label}>Password</label>
         <div>
-          <Field
+          <Field className={classes.Input}
             id="password"
             name="password"
             component="input"
@@ -76,10 +77,10 @@ class Signup extends Component {
         </div>
       </div>
       <div>
-        <label>Sex</label>
+        <label className={classes.Label}>Sex</label>
         <div>
-          <label>
-            <Field
+          <label >
+            <Field 
               name="sex"
               component="input"
               type="radio"
@@ -87,8 +88,8 @@ class Signup extends Component {
             />{' '}
             Male
           </label>
-          <label>
-            <Field
+          <label >
+            <Field 
               name="sex"
               component="input"
               type="radio"
@@ -99,7 +100,7 @@ class Signup extends Component {
         </div>
       </div>
       <div>
-        <button type="submit" disabled={pristine || submitting}>
+        <button type="submit" disabled={pristine || submitting} className={classes.Button}>
           SIGN UP
         </button>
       </div>

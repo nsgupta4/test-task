@@ -11,12 +11,13 @@ const post = (props) => {
     const postOutput = posts.map(ig=>{
         return <span 
         key={ig.name}
-        >{ig.name} ({ig.content}) </span>
+        > {ig.content}</span>
      })
     return (
         <div className={classes.Post}>
-        <h1>Post {props.number}</h1>
+        <p class="text-left">post</p>
         <p>{postOutput} </p>
+        <a onClick={props.clicked}><i class="far fa-trash-alt"></i> </a>
         </div>
     );
 };

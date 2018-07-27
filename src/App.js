@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import Signup from './containers/Auth/Signup';
 import Login from './containers/Auth/Login';
-import Posts from './containers/dashboard/Posts/Posts';
+//import Posts from './containers/dashboard/Posts/Posts';
 import Layout from './component/Layout/Layout';
 import { Route, Switch,Redirect, withRouter } from 'react-router-dom';
 import './App.css';
 import Logout from './containers/Auth/Logout';
 import * as actions from './store/actions/index';
+import dashboard from './containers/dashboard/dashboard';
 
 class App extends Component {
   componentDidMount(){
@@ -21,7 +22,7 @@ class App extends Component {
       <Route path="/login" component={Login} />
       <Route path="/signup" component={Signup} />
       <Route path="/logout" component={Logout} />
-      <Route path="/dashboard" component={Posts} />
+      <Route path="/dashboard" component={dashboard} />
       <Redirect to="/" />
        </Switch>
        </Layout>

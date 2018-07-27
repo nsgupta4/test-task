@@ -45,6 +45,17 @@ const authUserFail = (state, action) => {
         error: action.error
     });
 };
+const getUserDetailsSuccess = (state, action) => {
+    return updateObject(state,{
+        username: action.username
+    });
+};
+const getUserDetailsFail = (state, action) => {
+    return updateObject(state, {
+        error: action.error
+    });
+};
+
 
 const reducer = (state = initialState, action) => {
     switch(action.type) {
@@ -54,6 +65,8 @@ const reducer = (state = initialState, action) => {
         case actionTypes.AUTH_LOGOUT: return authLogout(state, action);
         case actionTypes.AUTH_USER: return authUser(state, action);
         case actionTypes.AUTH_USER_FAIL: return authUserFail(state,action);
+        case actionTypes.GET_USER_DETAILS_SUCCESS: return getUserDetailsSuccess(state, action);
+        case actionTypes.GET_USER_DETAILS_FAIL: return getUserDetailsFail(state, action);
         default: return state;    
     }
 };

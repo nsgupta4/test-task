@@ -39,6 +39,20 @@ export const authUserFail = (error) => {
         error: error,
     };
 };
+export const getUserDetailsSuccess = (name) => {
+    return{
+        type: actionTypes.GET_USER_DETAILS_SUCCESS,
+        username: name,
+    };
+};
+export const getUserDetailsFail = (error) => {
+    return{
+        type: actionTypes.GET_USER_DETAILS_FAIL,
+        error: error,
+    };
+};
+
+
 export const setUserDetails = (userData) => {
     return dispatch => {
         axios.post('https://test-task-2ae5b.firebaseio.com/userdetails.json', userData)
@@ -55,12 +69,22 @@ export const setUserDetails = (userData) => {
 export const getUserDetails = (token, email) => {
     return dispatch => {
         const queryParams = '?auth=' + token + '&orderBy="email"&equalTo="' + email + '"';
-        axios.get('https://test-task-2ae5b.firebaseio.com/users.json' + queryParams)
+        axios.get('https://test-task-2ae5b.firebaseio.com/userdetails.json' + queryParams)
         .then(response => {
             console.log(response);
+           // const newDetails = [];
+          /*  const nn = {
+                    ...response.data,
+                    ui:{
+                        ...response.data.userInfo,
+                    }
+                }*/
+            console.log();
+            dispatch(getUserDetailsSuccess(response));
         })
         .catch(err=> {
             console.log(err);
+            dispatch(getUserDetailsFail(err.response.data.error));
         })
     };
 };
@@ -115,13 +139,13 @@ export const login = (email, password) => {
             localStorage.setItem('token', response.data.idToken);
             localStorage.setItem('expirationDate', expirationDate);
             localStorage.setItem('userId', response.data.localId);
+            localStorage.setItem('email', email);
             dispatch(authSuccess(response.data.idToken, response.data.localId));
             dispatch(checkAuthTimeout(response.data.expiresIn));
             dispatch(getUserDetails(response.data.idToken, email));
         })
-        .catch(err => {
-            console.log(err);
-            dispatch(authFail(err.response.data.error))
+        .catch(error => {
+            dispatch(authFail(error.response.data.error))
         })
     };
 };

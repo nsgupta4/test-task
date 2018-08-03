@@ -3,54 +3,93 @@ import {updateObject} from './utility';
 
 const initialState = {
     posts:[],
-    error: null,    
+    error: null,
+    loading: false,
+    myPost: false,
+    home: false,
+    updating: false,
+    count: '',   
 };
 
 const addPostStart = (state, action) => {
     return updateObject(state, {
         error: null,
+        loading: true,
     });
 };
 const addPostSuccess = (state, action) => {
     return updateObject(state, {
         error: null,
+        loading: false,
     });
 };
 const addPostFail = (state, action) => {
     return updateObject(state, {
         error: action.error,
+        loading: false,
     });
 };
 const fetchPost = (state, action) => {
     return updateObject(state, {
-        
         error: null,
+        loading: true,
     });
 };
 const fetchPostSuccess = (state, action) => {
     return updateObject(state, {
         posts: action.posts,
         error: null,
+        loading: false,
+        myPost: action.myPost,
     });
 };
 const fetchPostFail = (state, action) => {
     return updateObject(state, {
         error: action.error,
+        loading: false,
     });
 };
 const deletePost = (state, action) => {
     return updateObject(state, {
         error: action.error,
+        loading: true,
     })
 };
 const deletePostSuccess = (state, action) => {
     return updateObject(state,{
         error:null,
+        loading: false,
     });
 };
 const deletePostFail = (state, action) => {
     return updateObject(state,{
         error:action.error,
+        loading: false,
+    });
+};
+const postLikedStart = (state, action) => {
+    return updateObject(state, {
+        error: null,
+    });
+};
+const postLikedSuccess = (state, action) => {
+    return updateObject(state, {
+        error: null,
+    });
+};
+const postLikedFail = (state, action) => {
+    return updateObject(state, {
+        error: action.error,
+    });
+};
+const fetchLikesSuccess = (state, action) => {
+    return updateObject(state,{
+        count:action.count,
+    })
+}
+const fetchLikesFail = (state, action) => {
+    return updateObject(state,{
+        error: action.error,
     });
 };
 const reducer = (state = initialState, action) => {
@@ -64,6 +103,11 @@ const reducer = (state = initialState, action) => {
         case actionTypes.DELETE_POST: return deletePost(state, action);
         case actionTypes.DELETE_POST_SUCCESS: return deletePostSuccess(state, action);
         case actionTypes.DELETE_POST_FAIL: return deletePostFail(state,action);
+        case actionTypes.POST_LIKED_START: return postLikedStart(state, action);
+        case actionTypes.POST_LIKED_SUCCESS: return postLikedSuccess(state, action);
+        case actionTypes.POST_LIKED_FAIL: return postLikedFail(state, action);
+        case actionTypes.FETCH_LIKES_SUCCESS: return fetchLikesSuccess(state, action);
+        case actionTypes.FETCH_LIKES_FAIL: return fetchLikesFail(state, action);
         default: return state;    
     }
 };

@@ -4,10 +4,47 @@ import { connect } from 'react-redux';
 import {Redirect} from 'react-router-dom';
 import { Field, reduxForm, } from 'redux-form';
 import classes from './Signup.css';
+const validate = values => {
+  const errors = {}
+  if (!values.name) {
+    errors.name = 'Required'
+  } else if (values.name.length > 15) {
+    errors.name = 'Must be 15 characters or less'
+  }
+  if (!values.username) {
+    errors.username = 'Required'
+  } else if (values.username.length > 15) {
+    errors.username = 'Must be 15 characters or less'
+  }
+  if (!values.email) {
+    errors.email = 'Required'
+  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+    errors.email = 'Invalid email address'
+  }
+  if (!values.password) {
+    errors.password = 'Required'
+  }
+  if(!values.conformPassword){
+    errors.conformPassword = 'Required'
+  }else if(values.password !== values.conformPassword){
+    errors.conformPassword = 'Password Must be same'
+  }
+  return errors
+}
+
+const warn = values => {
+  const warnings = {}
+  if (values.password > 6) {
+    warnings.age = 'password should be atleast be 6 char...'
+  }
+  return warnings
+};
+
 class Signup extends Component {
     state ={
         isSignup: true,
     }
+    
     render(){
         let authRedirect = null;
         if(this.props.isAuthenticated){
@@ -23,88 +60,78 @@ class Signup extends Component {
       this.props.onSignup(values.email, values.password, values.name, values.username, values.sex);
   };
   const { handleSubmit, pristine,  submitting } = this.props
+  const renderField = ({ input, label, type, meta: { touched, error, warning } }) => (
+    <div>
+      <label className={classes.Label}>{label}</label>
+      <div>
+        <input {...input} placeholder={label} type={type} className={classes.Input}/>
+        {touched && ((error && <span>{error}</span>) || (warning && <span>{warning}</span>))}
+      </div>
+    </div>
+  );
+ let form = ( <form onSubmit={handleSubmit(g)}>
+ 
+     <Field className={classes.Input}
+       name="name"
+       component={renderField}
+       type="text"
+       label="name"
+     />
+ 
+     <Field className={classes.Input}
+       name="username"
+       component={renderField}
+       type="text"
+       label="username"
+     />
+ 
+     <Field className={classes.Input}
+       name="email"
+       component={renderField}
+       type="email"
+       label="Email"
+     />
+       <Field 
+         name="sex"
+         component={renderField}
+         type="radio"
+         value="male"
+       />{' '}
+       Male
+   
+       <Field 
+         name="sex"
+         component={renderField}
+         type="radio"
+         value="female"
+       />{' '}
+       Female
+   
+       <Field className={classes.Input}
+       name="password"
+       component={renderField}
+       type="password"
+       label="Password"
+     />
+     <Field className={classes.Input}
+       name="conformPassword"
+       component={renderField}
+       type="password"
+       label="Confirm Password"
+     />
+ <div>
+   <button type="submit" disabled={pristine || submitting} className={classes.Button}>
+     SIGN UP
+   </button>
+ </div>
+</form>
+
+ );
   return ( 
       <div className={classes.Signup}> 
       {authRedirect}
       {errorMessage}
-    <form onSubmit={handleSubmit(g)}>
-      <div>
-        <label className={classes.Label}>Name</label>
-        <div>
-          <Field className={classes.Input}
-            id="name"
-            name="name"
-            component="input"
-            type="text"
-            placeholder="Name"
-          />
-        </div>
-      </div>
-      <div>
-        <label className={classes.Label}>UserName</label>
-        <div>
-          <Field className={classes.Input}
-            id="username"
-            name="username"
-            component="input"
-            type="text"
-            placeholder="Username"
-          />
-        </div>
-      </div>
-      <div>
-        <label className={classes.Label}>Email</label>
-        <div>
-          <Field className={classes.Input}
-            id="email"
-            name="email"
-            component="input"
-            type="email"
-            placeholder="Email"
-          />
-        </div>
-      </div>
-      <div>
-        <label className={classes.Label}>Password</label>
-        <div>
-          <Field className={classes.Input}
-            id="password"
-            name="password"
-            component="input"
-            type="password"
-            placeholder="Password"
-          />
-        </div>
-      </div>
-      <div>
-        <label className={classes.Label}>Sex</label>
-        <div>
-          <label >
-            <Field 
-              name="sex"
-              component="input"
-              type="radio"
-              value="male"
-            />{' '}
-            Male
-          </label>
-          <label >
-            <Field 
-              name="sex"
-              component="input"
-              type="radio"
-              value="female"
-            />{' '}
-            Female
-          </label>
-        </div>
-      </div>
-      <div>
-        <button type="submit" disabled={pristine || submitting} className={classes.Button}>
-          SIGN UP
-        </button>
-      </div>
-    </form>
+      {form}
 </div>  
 );
 }
@@ -141,5 +168,7 @@ const mapDispatchToProps = dispatch => {
     };
 
     export default connect(mapStateToProps,mapDispatchToProps)(Signup = reduxForm({
-        form: 'simple' // a unique identifier for this form
+        form: 'simple',
+        validate,
+        warn // a unique identifier for this form
       })(Signup));

@@ -1,17 +1,13 @@
 .Sidebar {
-    
     height: 100%;
     left: 0;
     top: 56;
     z-index: 200;
     background-color: darkslategrey;
-    padding: 32px 16px;
+    padding: 8px 8px;
     transition: transform 0.3s ease-out;
 }
-.Image{
-    height: 100px;
-}
-.Links {
+.Users {
     padding: 10px;
     margin: 10px auto;
     border: 1px solid #eee;
@@ -20,8 +16,10 @@
     width: 100%;
     text-align: center;
 }
-@media(max-width: 499px){
-    .DesktopOnly{
-        display: none;
-    }
+.Posts {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    width: 80%;
+    margin: auto;
 }

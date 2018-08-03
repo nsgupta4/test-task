@@ -3,11 +3,19 @@ export {
     login,
     logout,
     authCheckState,
-    getUserDetails
+    getUserDetails,
+    updateProfile,
+    updatePassword,
 } from './login';
 
 export {
     addPost,
     fetchPost,
     deletePost,
+    updatePost,
+    postLiked,
 } from './posts';
+
+export {
+    getUsers,
+} from './users';

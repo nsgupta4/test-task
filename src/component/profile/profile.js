@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import * as actions from '../../store/actions';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { Redirect, withRouter } from 'react-router-dom';
 import { Field, reduxForm, } from 'redux-form'
 import { RingLoader} from 'react-spinners';
 import classes from './Login.css';
@@ -9,43 +9,66 @@ import classes from './Login.css';
 const validate = values => {
     const errors = {}
 
-    if (!values.email) {
-      errors.email = 'Required'
-    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-      errors.email = 'Invalid email address'
-    }
-    if (!values.password) {
-      errors.password = 'Required'
+    if (!values.name) {
+      errors.name = 'Required'
+    } 
+    if (!values.username) {
+      errors.username = 'Required'
     } //else if(values.password.length < 6 ){
     //    errors.password = 'Atleast 6 char long'
     //}
+    if (!values.password) {
+      errors.password = 'Required'
+    }
+    if(!values.confirmPassword){
+      errors.confirmPassword = 'Required'
+    }else if(values.password !== values.confirmPassword){
+      errors.confirmPassword = 'Password Must be same'
+    }
     return errors;
   };
   
   const warn = values => {
     const warnings = {}
-    if (values.email < 6) {
-      warnings.age = 'Hmm, you seem a bit young...'
+    if (values.password < 6) {
+      warnings.confirmPassword = 'Too Weak'
     }
     return warnings
   };
-class Login extends Component {
+class Profile extends Component {
+ state = {
+   clicked: false,
+ }
+  componentDidMount(){
+    //this.props.onGetProfile();
+  }
+  onClickChangePassword = () => {
+    this.setState({
+      clicked: true,
+    })
+  }
     render(){
       const { handleSubmit, pristine,  submitting } = this.props
         let authRedirect = null;
         if(this.props.isAuthenticated){
             authRedirect = <Redirect to="/dashboard" />
         }
-
         let errorMessage = null;
-        if(this.props.err){
+        if(this.props.profileError){
             errorMessage = (
-                <p>{this.props.err.message}</p>
+                <p>{this.props.profileError.message}</p>
             );
         }
 
   const g = (values) =>{
-      this.props.onLogin(values.email, values.password);
+    if(this.state.clicked){
+      this.props.onChangePassword(values.password)
+    }else{
+      this.props.onUpdateProfile({
+        name: values.name,
+        username: values.username
+      });
+    }
   };
 
   
@@ -62,32 +85,65 @@ class Login extends Component {
   let form = (<form onSubmit={handleSubmit(g)}>
       
   <Field 
-    name="email"
+    name="name"
     component={renderField}
-    type="email"
-    label="email"
+    type="text"
+    label="Name"
+    
   />
+   <Field 
+    name="username"
+    component={renderField}
+    type="text"
+    label="username"
+  />
+           
 
-  <Field 
-    name="password"
-    component={renderField}
-    type="password"
-    label="Password"
-  />
 <div>
 <button type="submit" disabled={pristine || submitting} className={classes.Button}>
-  Login
+  Update
 </button>
 
 </div>
 </form>);
+const changeForm = (<form onSubmit={handleSubmit(g)}>
+      
+<Field 
+  name="password"
+  component={renderField}
+  type="password"
+  label="password"
+/>
+ <Field 
+  name="confirmPassword"
+  component={renderField}
+  type="password"
+  label="confirm Password"
+/>
+         
+
+<div>
+<button type="submit" disabled={pristine || submitting} className={classes.Button}>
+Change
+</button>
+
+</div>
+
+</form>
+
+);
   if(this.props.loading){
     form = <RingLoader />
+}else if(this.state.clicked){
+  form = changeForm;
 }
+
   return ( <div className={classes.Login}> 
+
     {authRedirect}
-    {errorMessage} 
+    {errorMessage}
     {form}
+  {this.state.clicked ? null :<a onClick={this.onClickChangePassword}>Change Password</a> }
     
 </div>  
 );
@@ -115,18 +171,20 @@ export default SimpleForm;
 const mapStateToProps = state => {
     return {
         isAuthenticated: state.login.token !==null,
-        err: state.login.error,
+        profileError: state.login.error,
         loading: state.login.loading,
+        initialValues: state.login,
     }
 }
 const mapDispatchToProps = dispatch => {
     return {
-      onLogin: (email, password) => dispatch(actions.login(email, password)),
+      onUpdateProfile: (updatedData) => dispatch(actions.updateProfile(updatedData)),
+      onChangePassword: (updatedPwd) => dispatch(actions.updatePassword(updatedPwd)),
       };
     };
 
-    export default connect(mapStateToProps, mapDispatchToProps)(Login = reduxForm({
+    export default connect(mapStateToProps, mapDispatchToProps)(Profile = reduxForm({
         form: 'simple',
         validate,
         warn
-      })(Login));
+      })(Profile));

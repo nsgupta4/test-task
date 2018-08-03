@@ -1,0 +1,25 @@
+.Users {
+    width: 100px;
+    text-align: center;
+    border: 1px solid #eee;
+    box-shadow: 0 2px 3px #ccc;
+    margin: 10px;
+    box-sizing: border-box;
+    cursor: pointer;
+    color: white;
+    padding: auto;
+}
+
+.Users:hover,
+.Users:active {
+    background-color: black;
+}
+
+.User {
+    margin: 16px 0;
+    color: #ccc;
+}
+.Image{
+    height: 100px;
+    width: 100px auto;
+}

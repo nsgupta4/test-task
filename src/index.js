@@ -8,6 +8,7 @@ import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import authReducer from './store/reducers/authReducer';
 import postReducer from './store/reducers/postReducer';
+import userReducer from './store/reducers/userReducer';
 import thunk from 'redux-thunk';
 import { BrowserRouter } from 'react-router-dom';
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
     form: reduxFormReducer,
     login: authReducer,
     fetch: postReducer,
+    user: userReducer,
 });
 
 const store= createStore(rootReducer,composeEnhancers(applyMiddleware(thunk)));

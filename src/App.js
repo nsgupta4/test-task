@@ -10,28 +10,36 @@ import Logout from './containers/Auth/Logout';
 import * as actions from './store/actions/index';
 import dashboard from './containers/dashboard/dashboard';
 import profile from './component/profile/profile';
-import users from './component/dashboard/users';
 
 class App extends Component {
   componentDidMount(){
     this.props.onTryAutoSignup();
   }
   render() {
+    let routes = (<Switch>
+      <Route path="/login" component={Login} />
+      <Route path="/signup" component={Signup} />
+      </Switch>
+    );
+    if(this.props.isAuthenticated){
+     routes = (<Switch>
+      <Route path="/dashboard" component={dashboard} />
+      <Route path="/logout" component={Logout} />
+      <Redirect path="/" to="/dashboard" /> 
+      </Switch>)
+    }
     return (
       <div>
       <Layout>
-      <Switch>
-      <Route path="/login" component={Login} />
-      <Route path="/signup" component={Signup} />
-      <Route path="/logout" component={Logout} />
-      <Route path="/dashboard" component={dashboard} />
-      <Route path="/dashboard/profile" component={profile}/>
-      <Route path="/dashboard/user" component={profile}/>
-      <Redirect path="/" to="/login" /> 
-      </Switch>
+     {routes}
        </Layout>
       </div>
     );
+  }
+}
+const mapStateToProps = state => {
+  return {
+    isAuthenticated: state.login.token !== null ,
   }
 }
 
@@ -41,4 +49,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default withRouter(connect(null,mapDispatchToProps)(App));
+export default withRouter(connect(mapStateToProps,mapDispatchToProps)(App));

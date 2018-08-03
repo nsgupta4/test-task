@@ -216,6 +216,7 @@ export const authCheckState = () => {
               dispatch(logout());
           }else {
               const userId = localStorage.getItem('userId');
+              localStorage.removeItem('userName');
               dispatch(getUserDetails(localStorage.getItem('token'),localStorage.getItem('email')));
               dispatch(authSuccess(token, userId));
               dispatch(checkAuthTimeout(expirationDate.getTime() - new Date().getTime()/ 1000 ));

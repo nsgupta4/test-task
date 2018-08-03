@@ -6,7 +6,7 @@ import Posts from './Posts/Posts';
 import Profile from '../../component/profile/profile';
 import * as actions from '../../store/actions/index';
 import { RingLoader } from 'react-spinners';
-import { Redirect, withRouter, Route } from 'react-router-dom';
+import { Redirect, withRouter } from 'react-router-dom';
 import RightSideBar from '../../component/Layout/rightSideBar';
 class dashboard extends Component {
     constructor(props){
@@ -14,6 +14,7 @@ class dashboard extends Component {
         this.state = {
             //myPosts: false,
             profile: false,
+            //users: this.props.users,
             //clicked: false,
         }
         //this.routeFunction = this.routeFunction.bind(this); 
@@ -26,7 +27,7 @@ componentDidMount(){
         //console.log(selectorFiles);
         alert('this looks ugly');
     }
-    
+
     onMyPostClick = () =>{ 
         this.setState({
             profile: false,
@@ -41,22 +42,27 @@ componentDidMount(){
             profile: false,
             //clicked: true,
         });
+        localStorage.removeItem('userName');
         this.props.history.push('/dashboard');
         this.props.onFetchHandler(this.props.token, this.props.userId, false);
     }
     
     onProfileClick = () => {
         console.log('inside route',this.state.profile)
-        this.props.history.push('/dashboard/profile');
+        //this.props.history.push('/dashboard/profile');
         this.setState({profile: !this.state.profile});
     }
     fetchUsers = () => {
         console.log('Inside fetchUsers');
         this.props.onFetchUsers();
     }
-    showUser = (userId) => {
-        this.props.history.push('/dashboard/user');
+    showUser = (userId, userName) => {
+        this.setState({
+            profile:false,
+        })
+        this.props.history.push('/dashboard/'+userName);
         let token = localStorage.getItem('token');
+        localStorage.setItem('userName', userName);
         this.props.onShowUsers(token ,userId, false, true);
     }
     render(){
@@ -95,7 +101,7 @@ componentDidMount(){
            {view}
             </div>
             <div className="col-sm-3">
-                <RightSideBar users={this.props.users} showUsers={(userId)=>this.showUser(userId)}/> 
+                <RightSideBar users={this.props.users} showUsers={(userId, userName)=>this.showUser(userId, userName)}/> 
                 </div>
             </div>
 

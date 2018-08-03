@@ -17,13 +17,13 @@ class Layout extends Component {
             return {showSideDrawer: !prevState.showSideDrawer};
         });
     }
-         
     render(){
         return( <Aux>
             <Toolbar
             username={this.props.name}
             isAuth={this.props.isAuthenticated}
             drawerToggleClicked={this.sideDrawerToggleHandler}
+
             />
             <SideDrawer 
             isAuth={this.props.isAuthenticated}

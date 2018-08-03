@@ -1,6 +1,7 @@
 import React from 'react';
 import classes from './Post.css';
 import Aux from '../../../hoc/Aux';
+import CommentBox from '../../UI/CommentBox/CommentBox';
 const post = (props) => {
     const posts = [];
   if(!props.filteredPost){  posts.push({
@@ -42,7 +43,7 @@ const post = (props) => {
             textAlign:'right', 
             padding:'4px',
         }}
-        > {ig.date}|{ig.time}</p>
+        > {ig.date}|{ig.time} </p>
     </Aux>)
      });
     
@@ -70,7 +71,7 @@ const post = (props) => {
         var filtered = (props.filteredPost.map(ig=>{
             return <span 
             key={ig.id}
-        > {ig.content} </span>}) );
+        > {ig.content}</span>}) );
        // var filt = [];
        // for(let key in newF){
        //     filt.push({key.content)
@@ -87,16 +88,20 @@ const post = (props) => {
     }
     //console.log('In post filtered', props.filteredPost, filtered);
     return (
-        <div className={classes.Post} onDoubleClick>
+        <Aux>
+        <div className={classes.Post}>
     
         <p className="text-left">post</p>
         <p>{ (props.search==='true') ? filtered : postOutput} </p>
       {editButton} 
         {deleteButton}
-        <div>
+       
+       <div>
         {props.search !== 'true' && postOutput !== '' ?<a onClick={props.liked}><i class="far fa-thumbs-up"></i>{props.postData.like}</a>:null }
-        </div>
-        </div>
+       </div>
+        </div> 
+                <CommentBox postId={props.number} commentData={props.commentData} /> 
+                </Aux>
     );
 };
 export default post; 

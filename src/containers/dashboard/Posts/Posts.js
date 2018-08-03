@@ -5,6 +5,7 @@ import * as actions from '../../../store/actions/index';
 import { connect } from 'react-redux';
 import { RingLoader } from 'react-spinners';
 import Aux from '../../../hoc/Aux';
+import InfiniteScroll from 'react-infinite-scroll-component';
 class Posts extends Component {
     state = {
         posts: {
@@ -19,13 +20,14 @@ class Posts extends Component {
         sortedPost:[],
         //clicked: false,
         totalLikes: 0,
-
+        items: Array.from({ length: 5 }),
+        loaderPost:[],
     }
 UNSAFE_componentWillMount(){
     console.log('compo',this.props.myPost);
 
     console.log('INside componentWillmount')
-      this.props.onFetchHandler(this.props.token, this.props.userId , this.props.myPost); 
+      //this.props.onFetchHandler(this.props.token, this.props.userId , this.props.myPost); 
        //this.fetchPage();
 }
 /*componentDidUpdate(){
@@ -38,10 +40,11 @@ UNSAFE_componentWillMount(){
         
     }
 }*/
-componentDidUpdate(){
+/*componentDidUpdate(){
+    
     //console.log('INside componentDidUpdate')
    //this.fetchPage();
-}
+}*/
 /*getDerivedStateFromProps(nextProps, prevState){
     console.log('inside getDerivedStateFromProps')
     this.fetchPage();
@@ -55,6 +58,8 @@ componentDidUpdate(){
         this.props.onFetchHandler(this.props.token, this.props.userId , this.props.myPost);
     } 
 };*/
+fetchMoreData=()=>{
+}
 sortPosts = () => {
     let sorted = this.props.posts.sort((a,b)=>{
        //var re =(b.postData.time > a.postData.time ? new Date(b.postData.date) > new Date(a.postData.date) : 0 ? n.push({content: a.postData.content,date:a.postData.date,time:a.postData.time}): 0);
@@ -134,20 +139,32 @@ render () {
         )));
         console.log('This is',filtered, this.props.posts, cPosts, this.state.sortedPost);
         //console.log('In pOsts Component',this.props.posts)
-        let post = (this.props.posts.sort((a,b)=>{
+        let post = <InfiniteScroll 
+            dataLength={this.state.items.length}
+            next={this.fetchMoreData}
+            hasMore={false}
+            loader={<h4>Loading...</h4>}
+            endMessage={
+                <p style={{textAlign: 'center'}}>
+                  <b>Yay! You have seen it all</b>
+                </p>
+              }
+        >
+            {(this.props.posts.sort((a,b)=>{
             return new Date(b.postData.date) > new Date(a.postData.date);
         }).map(post => (
             <Post 
                 key={post.id}
                 number={post.id}
                 postData={post.postData}
+                commentData={post.commentData}
                 query={this.state.query}
                 postClicked={this.postClickedHandler}
                 liked={()=>this.likeHandler(post.id,post.postData.like)}
                 onClickMyPost={this.props.myPost}
                 editClicked={()=> this.updateHandler(post.postData, post.id)}    
                 clicked={() => this.props.onDeleteHandler(this.props.token, post.id, this.props.userId)}/>
-        )));
+            )))}</InfiniteScroll>
         if(this.props.loading){
             post = <RingLoader />
         }
@@ -168,7 +185,7 @@ render () {
               <p><input type="text" placeholder="Search" value={this.state.query} onChange={(event)=>this.setState({query: event.target.value})}/>
               </p>
 
-                {post}
+                {this.props.posts.length<=0? <p style={{textAlign:'center'}}>No Post to show </p>: post}
             </Aux>
     
         );
@@ -180,6 +197,7 @@ const mapStateToProps = state => {
         userId: state.login.userId,
         posts: state.fetch.posts,
         loading: state.fetch.loading,
+        message: state.fetch.message,
     }
 }
 const mapDispatchToProps = dispatch => {

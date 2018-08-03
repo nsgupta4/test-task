@@ -55,7 +55,7 @@ export const fetchPost = (token, userId, myPost, userPost) => {
                     ...response.data[key],
                     id: key,
                 });
-            } 
+            }
             console.log('Inside action',response.data, fetchedPost); 
             dispatch(fetchPostSuccess(fetchedPost,myPost));
         })
@@ -65,6 +65,9 @@ export const fetchPost = (token, userId, myPost, userPost) => {
     };
 };
 export const fetchPostSuccess = (posts,myPost) => {
+    if(posts.length<=0){
+        this.message = "No Posts to show";
+    }
     return {
         type: actionTypes.FETCH_POST_SUCCESS,
         posts: posts,
@@ -214,3 +217,39 @@ export const fetchLikes = () => {
     });
     };  
 }
+
+export const addCommentStart = () => {
+    return {
+        type: actionTypes.ADD_COMMENT_START,
+    };
+};
+export const addCommentSuccess = () => {
+    return {
+        type: actionTypes.ADD_COMMENT_SUCCESS,
+    };
+};
+export const addCommentFail = (error) => {
+    return {
+        type: actionTypes.ADD_COMMENT_FAIL,
+        error: error,
+    };
+}; 
+
+export const addComment = (postId, commentData) =>{
+    return dispatch => {
+        const userId = localStorage.getItem('userId');
+        const token = localStorage.getItem('token');
+                dispatch(addCommentStart());
+                const queryParams = postId +'/commentData.json/?auth=' + token;
+        axios.post('https://test-task-2ae5b.firebaseio.com/users/' + queryParams, commentData)
+        .then(response=> {
+            dispatch(addCommentSuccess());
+            console.log(response);
+            dispatch(fetchPost(token, userId));
+        })
+        .catch(error => {
+            dispatch(addCommentFail(error));
+            console.log(error);
+        });
+    };
+};

@@ -14,6 +14,7 @@ export {
     deletePost,
     updatePost,
     postLiked,
+    addComment,
 } from './posts';
 
 export {

@@ -8,7 +8,9 @@ const toolbar = (props) => (
         <div style={{color: 'White'}}>
         {props.username}
         </div>
-
+        <div style={{color: 'White'}}>
+        {localStorage.getItem('userName')===''? null: localStorage.getItem('userName')}
+       </div>
          <nav className={classes.DesktopOnly}>
              <NavigationItems isAuthenticated={props.isAuth}/>
          </nav>

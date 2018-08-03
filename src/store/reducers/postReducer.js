@@ -8,7 +8,8 @@ const initialState = {
     myPost: false,
     home: false,
     updating: false,
-    count: '',   
+    count: '', 
+    message:'',  
 };
 
 const addPostStart = (state, action) => {
@@ -92,6 +93,25 @@ const fetchLikesFail = (state, action) => {
         error: action.error,
     });
 };
+const addCommentStart = (state, action) => {
+    return updateObject(state, {
+        error: null,
+        loading: true,
+    });
+};
+const addCommentSuccess = (state, action) => {
+    return updateObject(state, {
+        error: null,
+        loading: false,
+    });
+};
+const addCommentFail = (state, action) => {
+    return updateObject(state, {
+        error: action.error,
+        loading: false,
+    });
+};
+
 const reducer = (state = initialState, action) => {
     switch(action.type) {
         case actionTypes.ADD_POST: return addPostStart(state, action);
@@ -108,6 +128,9 @@ const reducer = (state = initialState, action) => {
         case actionTypes.POST_LIKED_FAIL: return postLikedFail(state, action);
         case actionTypes.FETCH_LIKES_SUCCESS: return fetchLikesSuccess(state, action);
         case actionTypes.FETCH_LIKES_FAIL: return fetchLikesFail(state, action);
+        case actionTypes.ADD_COMMENT_START: return addCommentStart(state, action);
+        case actionTypes.ADD_COMMENT_SUCCESS: return addCommentSuccess(state, action);
+        case actionTypes.ADD_COMMENT_FAIL: return addCommentFail(state, action);
         default: return state;    
     }
 };

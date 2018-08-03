@@ -13,7 +13,7 @@ const RightSideBar = (props) => {
   </div>
   );
 } 
-*/
+*/console.log('In right Side bar');
     return (
     <div className={classes.Sidebar}>
         <h5 className={classes.Users}>My Connections</h5>
@@ -23,7 +23,7 @@ const RightSideBar = (props) => {
                 key={ig.name}
                 name={ig.name}
                 username={ig.username}
-                clicked={()=>props.showUsers(ig.userId)}
+                clicked={()=>props.showUsers(ig.userId, ig.username)}
             />
  }) }
         </div>

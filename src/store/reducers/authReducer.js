@@ -9,6 +9,7 @@ const initialState = {
     userId: null,
     error: null,
     loading: false,
+    message: '',
 }
 const authStart = (state, action) => {
     return updateObject(state, {
@@ -71,6 +72,7 @@ const updateProfileSuccess = (state, action) => {
     return updateObject(state, {
         error: null,
         loading: false,
+        message: action.message,
     });
 };
 const updateProfileFail = (state, action) => {
@@ -109,9 +111,9 @@ const reducer = (state = initialState, action) => {
         case actionTypes.AUTH_USER_FAIL: return authUserFail(state,action);
         case actionTypes.GET_USER_DETAILS_SUCCESS: return getUserDetailsSuccess(state, action);
         case actionTypes.GET_USER_DETAILS_FAIL: return getUserDetailsFail(state, action);
-        case actionTypes.UPDATE_POST_START: return updateProfileStart(state, action);
-        case actionTypes.UPDATE_POST_SUCCESS: return updateProfileSuccess(state, action);
-        case actionTypes.UPDATE_POST_FAIL: return updateProfileFail(state, action);
+        case actionTypes.UPDATE_PROFILE_START: return updateProfileStart(state, action);
+        case actionTypes.UPDATE_PROFILE_SUCCESS: return updateProfileSuccess(state, action);
+        case actionTypes.UPDATE_PROFILE_FAIL: return updateProfileFail(state, action);
         case actionTypes.UPDATE_PASSWORD_START: return updatePasswordStart(state, action);
         case actionTypes.UPDATE_PASSWORD_SUCCESS: return updatePasswordSuccess(state, action);
         case actionTypes.UPDATE_PASSWORD_FAIL: return updatePasswordFail(state, action);

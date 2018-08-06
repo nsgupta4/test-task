@@ -24,8 +24,8 @@ const validate = values => {
   
   const warn = values => {
     const warnings = {}
-    if (values.email < 6) {
-      warnings.age = 'Hmm, you seem a bit young...'
+    if (values.password < 6) {
+      //warnings.password = 'password must be 6 char long'
     }
     return warnings
   };
@@ -50,11 +50,11 @@ class Login extends Component {
 
   
   
-  const renderField = ({ input, label, type, meta: { touched, error, warning } }) => (
+  const renderField = ({ input, label, type, fcc, meta: { touched, error, warning } }) => (
     <div>
       <label className={classes.Label}>{label}</label>
       <div>
-        <input {...input} placeholder={label} type={type} className={classes.Input}/>
+        <input autoFocus {...input} placeholder={label} type={type} className={classes.Input}/>
         {touched && ((error && <span>{error}</span>) || (warning && <span>{warning}</span>))}
       </div>
     </div>
@@ -82,7 +82,9 @@ class Login extends Component {
 </div>
 </form>);
   if(this.props.loading){
-    form = <RingLoader />
+    form = <RingLoader loaderStyle={{display: "block", margin: "0 auto", borderColor: 'red'}}
+    sizeUnit={"px"}
+    size={150}/>
 }
   return ( <div className={classes.Login}> 
     {authRedirect}

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import classes from './Sidebar.css';
 import Image from '../../assets/userDefault.png';
 const Sidebar = (props) => {
@@ -9,12 +8,12 @@ const Sidebar = (props) => {
         <div className={classes.Sidebar}>
             <div className="well well-sm">
             
-           <button style={{width:'relative'}}> <img src={Image} alt="Profile" className={classes.Image}/> </button>
+           <img src={Image} alt="Profile" className={classes.Image}/>   
              </div>
              <p className={classes.Links}>Welcome! {props.uname}</p>
-             <p><a  onClick={props.changed}>Home</a></p>
-            <p><a  onClick={props.my}>My Posts</a></p>
-           <a onClick={props.profileClicked} > Profile</a>
+             <p><a onClick={props.changed}className={classes.Link}>Home</a></p>
+            <p><a  onClick={props.my}  className={classes.Link}>My Posts</a></p>
+           <a onClick={props.profileClicked} className={classes.Link} > Profile</a>
      
      </div>      
         

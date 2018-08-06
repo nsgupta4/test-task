@@ -3,7 +3,8 @@
     left: 0;
     top: 56;
     z-index: 200;
-    background-color: darkslategrey;
+    background: radial-gradient(ellipse at center,  rgba(81,112,173,1) 0%,rgba(53,84,147,1) 100%);
+	border:1px solid #2d416d;
     padding: 8px 8px;
     transition: transform 0.3s ease-out;
 }

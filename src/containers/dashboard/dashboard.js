@@ -8,6 +8,7 @@ import * as actions from '../../store/actions/index';
 import { RingLoader } from 'react-spinners';
 import { Redirect, withRouter } from 'react-router-dom';
 import RightSideBar from '../../component/Layout/rightSideBar';
+import post from '../../component/dashboard/post/Post';
 class dashboard extends Component {
     constructor(props){
         super(props);
@@ -49,7 +50,7 @@ componentDidMount(){
     
     onProfileClick = () => {
         console.log('inside route',this.state.profile)
-        //this.props.history.push('/dashboard/profile');
+        this.props.history.push('/dashboard/profile');
         this.setState({profile: !this.state.profile});
     }
     fetchUsers = () => {
@@ -66,14 +67,13 @@ componentDidMount(){
         this.props.onShowUsers(token ,userId, false, true);
     }
     render(){
-        console.log("Dashboard-----", this.state)
         let redirect = null;
         if(!this.props.isAuthenticated){
             redirect = <Redirect path="/"/>
         }
         let view = ( this.props.posts ? <Posts myPost={this.props.myPost} showUsers/>: <Posts />);
         if(this.props.loading){
-            view =  <RingLoader loading={this.state.loading} 
+            view =  <RingLoader loading={this.props.loading} 
             loaderStyle={{display: "block", margin: "0 auto", borderColor: 'red'}}
             sizeUnit={"px"}
             size={150}/>
@@ -130,4 +130,5 @@ const mapDispatchToProps = dispatch => {
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(dashboard));
+
 

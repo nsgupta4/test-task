@@ -3,6 +3,7 @@ import * as actions from '../../store/actions';
 import { connect } from 'react-redux';
 import {Redirect} from 'react-router-dom';
 import { Field, reduxForm, } from 'redux-form';
+import {RingLoader} from 'react-spinners';
 import classes from './Signup.css';
 const validate = values => {
   const errors = {}
@@ -24,18 +25,21 @@ const validate = values => {
   if (!values.password) {
     errors.password = 'Required'
   }
-  if(!values.conformPassword){
-    errors.conformPassword = 'Required'
-  }else if(values.password !== values.conformPassword){
-    errors.conformPassword = 'Password Must be same'
+  if(values.password < 6){
+    errors.password = 'password must be 6 char long'
+  }
+  if(!values.confirmPassword){
+    errors.confirmPassword = 'Required'
+  }else if(values.password !== values.confirmPassword){
+    errors.confirmPassword = 'Password Must be same'
   }
   return errors
 }
 
 const warn = values => {
   const warnings = {}
-  if (values.password > 6) {
-    warnings.age = 'password should be atleast be 6 char...'
+  if (values.password <= 6) {
+    warnings.password = 'password should be atleast be 6 char...'
   }
   return warnings
 };
@@ -51,9 +55,9 @@ class Signup extends Component {
             authRedirect = <Redirect to="/dashboard" />
         }
         let errorMessage = null;
-        if(this.props.error){
+        if(this.props.err){
             errorMessage = (
-                <p>{this.props.error.message}</p>
+                <p>{this.props.err.message}</p>
             );
         }
   const g = (values) =>{
@@ -96,17 +100,17 @@ class Signup extends Component {
          component={renderField}
          type="radio"
          value="male"
+         label="Male"
        />{' '}
-       Male
    
        <Field 
          name="sex"
          component={renderField}
          type="radio"
          value="female"
+         label="Female"
        />{' '}
-       Female
-   
+
        <Field className={classes.Input}
        name="password"
        component={renderField}
@@ -114,7 +118,7 @@ class Signup extends Component {
        label="Password"
      />
      <Field className={classes.Input}
-       name="conformPassword"
+       name="confirmPassword"
        component={renderField}
        type="password"
        label="Confirm Password"
@@ -124,10 +128,13 @@ class Signup extends Component {
      SIGN UP
    </button>
  </div>
-</form>
-
- );
-  return ( 
+</form>);
+if(this.props.loading){
+  form = <RingLoader loaderStyle={{display: "block", margin: "0 auto", borderColor: 'red'}}
+  sizeUnit={"px"}
+  size={150}/>
+}
+return ( 
       <div className={classes.Signup}> 
       {authRedirect}
       {errorMessage}
@@ -157,7 +164,8 @@ export default SimpleForm;
 const mapStateToProps = state => {
     return {
         isAuthenticated: state.login.token !==null,
-        error: state.login.error,
+        err: state.login.error,
+        loading: state.login.loading
     }
 }
 

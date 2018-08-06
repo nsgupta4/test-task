@@ -11,6 +11,7 @@ class CommentBox extends Component{
         },
         out: '',
         message:'',
+        hide: true,
    }   
    changeHandler = (event) => {
     this.setState({
@@ -22,6 +23,7 @@ class CommentBox extends Component{
     console.log('In Comment BOx', this.state.commentData, this.props.commentData);
    }
    showCommentHandler = () => {
+       this.setState({hide: !this.state.hide, message: ''})
     let comments = [];
     for(let key in this.props.commentData){
         comments.push({
@@ -38,19 +40,15 @@ class CommentBox extends Component{
             // Object.keys(item).map((commentKey, idx) => {
                 // return (
                     <React.Fragment>
-                    <p key={item.id} style={{
-                        margin: '0 8px',
-                        padding: '5px',
-                        border: '1px solid #ccc',
-                    }}>
-                    {item['comment']}&nbsp;&nbsp;
-                    </p>
-                    <span key={index} style={{
-                        margin: '0 8px',
-                        padding: '5px',
-                    }}>
+                        <div className={classes.singlecontainer}>
+                        <span key={index}>
                     {item['name']}
-                    </span><br/>
+                    </span>
+                    <span key={item.id}>
+                    {item['comment']}&nbsp;&nbsp;
+                    </span>
+                   <br/>
+                    </div>
                 </React.Fragment>
                 // )
             // })
@@ -62,13 +60,18 @@ class CommentBox extends Component{
 }
     render(){
     return (
-        <div className={classes.Comment} onDoubleClick={this.showCommentHandler}>
-        <i class="far fa-comment"></i>
-        <input type="text" value={this.state.commentData.comment} onChange={this.changeHandler}/>
-        <button type="button" className="btn btn-primary" onClick={()=>this.props.onCommentHandler(this.props.postId, this.state.commentData)}>Comment</button>
-      <div>
-      {this.state.message.length<=0? this.state.out: this.state.message}
-
+        <div onDoubleClick={this.showCommentHandler} className={classes.input}>
+        <input 
+        type="text" 
+        value={this.state.commentData.comment} 
+        onChange={this.changeHandler} 
+        placeholder="Write a comment"
+        className={classes.input}/>
+        <button type="button" className="btn btn-primary" onClick={()=>this.props.onCommentHandler(this.props.postId, this.state.commentData)} style={{height: '30px'}}>Comment</button>
+        <a onClick={this.showCommentHandler} className={classes.Expand}><i className="fas fa-chevron-circle-down fa-2x"></i></a>
+      <div className={classes.singlecomment}>
+      
+      {this.state.message.length<=0 ? this.state.hide ? this.state.out : null : this.state.message}
       </div>
         </div>
     );

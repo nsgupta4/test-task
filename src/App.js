@@ -19,6 +19,7 @@ class App extends Component {
     let routes = (<Switch>
       <Route path="/login" component={Login} />
       <Route path="/signup" component={Signup} />
+      <Redirect path="/" to="/login" />
       </Switch>
     );
     if(this.props.isAuthenticated){

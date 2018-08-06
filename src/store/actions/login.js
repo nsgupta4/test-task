@@ -113,6 +113,7 @@ export const signUp = (email, password, name, username, sex) => {
             localStorage.setItem('userId', response.data.localId);
             dispatch(authSuccess(response.data.idToken, response.data.localId));
             dispatch(checkAuthTimeout(response.data.expiresIn));
+            dispatch(getUserDetails(response.data.idToken, email));
             const userInfo = {
                 name: name,
                 username: username,
@@ -230,9 +231,10 @@ export const updateProfileStart = () => {
         type: actionTypes.UPDATE_PROFILE_START,
     };
 };
-export const updateProfileSuccess = () => {
+export const updateProfileSuccess = (message) => {
     return {
         type: actionTypes.UPDATE_PROFILE_SUCCESS,
+        message: message,
     };
 };
 export const updateProfileFail = (error) => {
@@ -246,11 +248,12 @@ export const updateProfile = (postData) =>{
         const email = localStorage.getItem('email');
         const key = localStorage.getItem('userKey');
         const token = localStorage.getItem('token');
+        const message = "Yeah! profile updated";
                 dispatch(updateProfileStart());
                 const queryParams = key +'.json/?auth=' + token;
         axios.patch('https://test-task-2ae5b.firebaseio.com/userdetails/' + queryParams, postData)
         .then(response=> {
-            dispatch(updateProfileSuccess());
+            dispatch(updateProfileSuccess(message));
             console.log(response);
             dispatch(getUserDetails(token, email));
         })

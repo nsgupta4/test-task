@@ -4,12 +4,13 @@
     left: 0;
     top: 56;
     z-index: 200;
-    background-color: darkslategrey;
+    background: radial-gradient(ellipse at center,  rgba(81,112,173,1) 0%,rgba(53,84,147,1) 100%);
     padding: 32px 16px;
     transition: transform 0.3s ease-out;
 }
 .Image{
     height: 100px;
+    width: auto;
 }
 .Links {
     padding: 10px;
@@ -19,6 +20,9 @@
     box-sizing: border-box;
     width: 100%;
     text-align: center;
+}
+.Link{
+    color: white;
 }
 @media(max-width: 499px){
     .DesktopOnly{

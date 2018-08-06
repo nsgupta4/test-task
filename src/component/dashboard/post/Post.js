@@ -8,6 +8,7 @@ const post = (props) => {
         content: props.postData.content,
         date: props.postData.date,
         time: props.postData.time,
+        username: props.postData.username,
     });
 }
     /*const newCheck = {
@@ -32,46 +33,50 @@ const post = (props) => {
              time: newP.time,
          }
      })*/
-    console.log('In postData', props.postData, posts);
+    //console.log('In postData', props.postData, posts);
     //console.log(posts.content.indexOf(props.query));
     const postOutput = posts.map(ig=>{
         return (<Aux><span 
         key={ig.date}
         > {ig.content} </span>
-        <p 
-        style={{
-            textAlign:'right', 
-            padding:'4px',
-        }}
-        > {ig.date}|{ig.time} </p>
     </Aux>)
      });
     
      
 
-     console.log('All posts',postOutput,posts);
+     //console.log('All posts',postOutput,posts);
     let deleteButton = null;
     let editButton = null;
     if(props.onClickMyPost){
-        editButton = (<a onClick={props.editClicked}><i className="far fa-edit"></i></a>);
-        deleteButton = (<a onClick={props.clicked}><i className="far fa-trash-alt"></i> </a>);
+        editButton = (<a onClick={props.editClicked} className={classes.actionbutton}><i className="far fa-edit fa-2x"></i></a>);
+        deleteButton = (<a onClick={props.clicked} className={classes.actionbutton}><i className="far fa-trash-alt fa-2x"></i> </a>);
     }
     if(props.search === 'true'){
   /*  var filtered = (props.filteredPost.map(ig=>{
         return <span 
         key={ig.content}
     > {ig.content} </span>}) );
-*/
+
    var newF = [];
    for(let index in props.filteredPost){
         newF.push({
-            id: index,
             content:props.filteredPost[index].content,
-        })}
-        var filtered = (props.filteredPost.map(ig=>{
-            return <span 
-            key={ig.id}
-        > {ig.content}</span>}) );
+        })} */
+        var filtered = (props.filteredPost.map((ig,index)=>{
+            return (
+            <React.Fragment>
+                <span 
+            key={ig.time} style={{
+                margin: '0 8px',
+                padding: '5px',
+                border: '1px solid #ccc',}}
+        > {ig['content']}</span>
+        <span key={index}>
+                {ig['username']}
+        </span><br/><br/>
+        </React.Fragment>
+    )
+        }) );
        // var filt = [];
        // for(let key in newF){
        //     filt.push({key.content)
@@ -84,23 +89,32 @@ const post = (props) => {
    /* for(let index in props.filteredPost){
         return <span>{props.filteredPost[index].content}</span>
     }*/
-    console.log('In post filtered', props.filteredPost, newF,filtered);
+   // console.log('In post filtered', props.filteredPost,filtered);
     }
     //console.log('In post filtered', props.filteredPost, filtered);
     return (
         <Aux>
-        <div className={classes.Post}>
-    
-        <p className="text-left">post</p>
-        <p>{ (props.search==='true') ? filtered : postOutput} </p>
-      {editButton} 
-        {deleteButton}
+         <div className={classes.App}>  
+        <div className={classes.creator}>
+        {!props.filteredPost ? <img alt=""/>: null}
+        <div>
+        <p>{!props.filteredPost ? props.postData.username : null}</p>
+        <p className="text-right">{!props.filteredPost ? props.postData.date : null } | { !props.filteredPost ? props.postData.time : null}</p></div>
+        </div>
+        <p className={classes.message}>{ (props.search==='true') ? filtered : postOutput} </p>
+      
        
-       <div>
-        {props.search !== 'true' && postOutput !== '' ?<a onClick={props.liked}><i class="far fa-thumbs-up"></i>{props.postData.like}</a>:null }
+       <div className={classes.bar}>
+        {props.search !== 'true' && postOutput !== '' ?<a onClick={props.liked} className={classes.actionbutton}><i className="far fa-thumbs-up fa-2x"></i>{props.postData.like}</a>:null }
+        {props.search !== 'true' && postOutput !== '' ?<a className={classes.actionbutton} 
+        >
+        <i className="far fa-comment fa-2x"></i></a>:null }
+        {editButton} 
+        {deleteButton}
        </div>
-        </div> 
-                <CommentBox postId={props.number} commentData={props.commentData} /> 
+       
+       {!props.filteredPost ? <CommentBox postId={props.number} commentData={props.commentData} />: null }
+               </div>
                 </Aux>
     );
 };

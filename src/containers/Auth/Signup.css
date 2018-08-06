@@ -2,6 +2,7 @@
     margin: 20px auto;
     width: 80%;
     text-align: center;
+    background: radial-gradient(ellipse at center,  rgba(81,112,173,1) 0%,rgba(53,84,147,1) 100%);
     box-shadow: 0 2px 3px #ccc;
     border: 1px solid #eee;
     padding: 10px;
@@ -16,24 +17,35 @@
 }
 
 .Input{
-    width: 100%;
-    padding: 10px;
-    box-sizing: border-box;
+    width: 100%; 
+    border: 1px solid #314d89;
+    outline: none;
+    padding: 12px 20px;
+    color: black;
+    font-weight: 400;
+  font-family: 'Lato', sans-serif;
+cursor:pointer;
 }
 .Label{
     font-weight: bold;
     display: block;
     margin-bottom: 8px;
     padding: 10px;
+    color: black;
 }
 .Button {
-    background-color: lightgreen;
-    border: none;
-    color: black;
-    outline: none;
-    cursor: pointer;
-    font: inherit;
-    padding: 10px;
-    margin: 10px;
-    font-weight: bold;
+    font-family: 'Lato', sans-serif;
+	  font-weight: 400;
+		background: linear-gradient(to bottom,  rgba(224,224,224,1) 0%,rgba(206,206,206,1) 100%);
+		display: block;
+		margin: 20px auto 0 auto;
+		width: 100%;
+		border: none;
+		border-radius: 3px;
+		padding: 8px;
+		font-size: 17px;
+		color: #636363;
+		text-shadow: 0 1px 0 rgba(255, 255, 255, 0.45);
+		font-weight: 700;
+		box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.17), 0 1px 0 rgba(255, 255, 255, 0.36) inset;
 }

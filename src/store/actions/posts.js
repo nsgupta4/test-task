@@ -107,6 +107,7 @@ export const deletePost = (token, key, userId) => {
         axios.delete('https://test-task-2ae5b.firebaseio.com/users/' + queryParams)
         .then(response => { 
             dispatch(deletePostSuccess(response.data));
+            dispatch(fetchPost(token, userId, true));
         })
         .catch(err=>{
             dispatch(deletePostFail(err.response.data.error));
@@ -139,7 +140,7 @@ export const updatePost = (token, key ,postData) =>{
         .then(response=> {
             dispatch(updatePostSuccess(response.data));
             console.log(response);
-            dispatch(fetchPost(token, userId));
+            dispatch(fetchPost(token, userId, true));
         })
         .catch(error => {
             dispatch(updatePostFail(error));

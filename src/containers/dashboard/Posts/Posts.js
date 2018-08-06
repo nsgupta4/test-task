@@ -13,6 +13,7 @@ class Posts extends Component {
             date: '',
             time: '',
             like: 0,
+            username:'',
             //userId:'',
         },
         updating: false,
@@ -21,12 +22,11 @@ class Posts extends Component {
         //clicked: false,
         totalLikes: 0,
         items: Array.from({ length: 5 }),
-        loaderPost:[],
     }
 UNSAFE_componentWillMount(){
-    console.log('compo',this.props.myPost);
+   // console.log('compo',this.props.myPost);
 
-    console.log('INside componentWillmount')
+    //console.log('INside componentWillmount')
       //this.props.onFetchHandler(this.props.token, this.props.userId , this.props.myPost); 
        //this.fetchPage();
 }
@@ -73,7 +73,7 @@ sortPosts = () => {
 updateHandler = (postData, postId) => {
     localStorage.setItem('postId', postId);
     this.setState({posts:{content: postData.content}, updating: true});
-    console.log('In updateHandler',postData.content);
+    //console.log('In updateHandler',postData.content);
 };
 changedHandler = (event) => {
    let newDate = `${new Date().getDate()}-${new Date().getMonth()}-${new Date().getFullYear()}`;
@@ -82,6 +82,7 @@ changedHandler = (event) => {
         date: newDate,
         time: newTime,
         like: 0,
+        username: this.props.username,
         //userId: this.props.userId,
     }});
 }; 
@@ -91,24 +92,21 @@ likeHandler = (postId, initLikes) => {
         let like = initLikes + 1;
     this.props.onPostLikedHandler(postId, {like});
     //}
-    console.log('checking totalLikes value',this.state.totalLikes);
-}
-postClickedHandler = () => {
-
+    //console.log('checking totalLikes value',this.state.totalLikes);
 }
 render () {
-    console.log("Posts---------------")
+    //console.log("Posts---------------")
     //console.log('checking clicked value',this.state.clicked);
         const postInfo ={
             postData: this.state.posts,
             userId: this.props.userId,
         };
-        let button = (<button type="button" className="btn btn-primary" onClick={() => this.props.onAddHandler(this.props.token, postInfo)}>Add Post</button>);
+        let button = (<button type="button" className="btn btn-primary" onClick={() => this.props.onAddHandler(this.props.token, postInfo)} >Add Post</button>);
         if(this.state.updating){
             button= ( <Aux><button type="button" className="btn btn-primary" onClick={() => {
                 this.props.onUpdatePostHandler(this.props.token, localStorage.getItem('postId') , this.state.posts)}
                 }>Update Post</button>
-                <button type="button" className="btn btn-primary" onClick={()=>this.setState({posts:{content: ''}})}>Cancel</button></Aux>
+                <button type="button" className="btn btn-primary" onClick={()=>this.setState({posts:{content: ''},updating: false})}>Cancel</button></Aux>
         );
         }
         let fPosts = [];
@@ -121,7 +119,7 @@ render () {
             if(post.content.indexOf(this.state.query)=== -1){ 
             return null;
             }
-            filtered.push(post);
+           return filtered.push(post);
         })
        /* let con =[];
         for(let key in filtered){
@@ -137,7 +135,7 @@ render () {
                 name: index.postData,
             })
         )));
-        console.log('This is',filtered, this.props.posts, cPosts, this.state.sortedPost);
+       // console.log('This is',filtered, this.props.posts, cPosts, this.state.sortedPost);
         //console.log('In pOsts Component',this.props.posts)
         let post = <InfiniteScroll 
             dataLength={this.state.items.length}
@@ -159,14 +157,16 @@ render () {
                 postData={post.postData}
                 commentData={post.commentData}
                 query={this.state.query}
-                postClicked={this.postClickedHandler}
                 liked={()=>this.likeHandler(post.id,post.postData.like)}
                 onClickMyPost={this.props.myPost}
                 editClicked={()=> this.updateHandler(post.postData, post.id)}    
                 clicked={() => this.props.onDeleteHandler(this.props.token, post.id, this.props.userId)}/>
             )))}</InfiniteScroll>
         if(this.props.loading){
-            post = <RingLoader />
+            post = <RingLoader 
+            loaderStyle={{display: "block", margin: "0 auto", borderColor: 'red'}}
+            sizeUnit={"px"}
+            size={150}/>
         }
         if(this.state.query !== ''){
             post = <Post 
@@ -182,7 +182,10 @@ render () {
              value={this.state.posts.content} id= "textArea" maxLength="140" placeholder="Write Something! limit char to 140"></textarea>
               {button}
 
-              <p><input type="text" placeholder="Search" value={this.state.query} onChange={(event)=>this.setState({query: event.target.value})}/>
+              <p><input type="text" placeholder="Search" 
+              value={this.state.query} 
+              onChange={(event)=>this.setState({query: event.target.value})}
+              style={{margin:'10px', position:'relative'}}/>
               </p>
 
                 {this.props.posts.length<=0? <p style={{textAlign:'center'}}>No Post to show </p>: post}
@@ -198,6 +201,7 @@ const mapStateToProps = state => {
         posts: state.fetch.posts,
         loading: state.fetch.loading,
         message: state.fetch.message,
+        username: state.login.username,
     }
 }
 const mapDispatchToProps = dispatch => {

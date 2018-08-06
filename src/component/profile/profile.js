@@ -54,9 +54,9 @@ class Profile extends Component {
             authRedirect = <Redirect to="/dashboard" />
         }
         let errorMessage = null;
-        if(this.props.profileError){
+        if(this.props.message){
             errorMessage = (
-                <p>{this.props.profileError.message}</p>
+                <p>{this.state.clicked ? null :this.props.message}</p>
             );
         }
 
@@ -174,6 +174,7 @@ const mapStateToProps = state => {
         profileError: state.login.error,
         loading: state.login.loading,
         initialValues: state.login,
+        message: state.login.message,
     }
 }
 const mapDispatchToProps = dispatch => {

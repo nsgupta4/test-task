@@ -2,20 +2,20 @@ import React, { Component } from 'react';
 import * as actions from '../../store/actions';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import { Field, reduxForm, } from 'redux-form'
+import { Field, reduxForm, } from 'redux-form';
 import { RingLoader} from 'react-spinners';
 import classes from './Login.css';
 
 const validate = values => {
-    const errors = {}
+    const errors = {};
 
     if (!values.email) {
-      errors.email = 'Required'
+      errors.email = 'Required';
     } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-      errors.email = 'Invalid email address'
+      errors.email = 'Invalid email address';
     }
     if (!values.password) {
-      errors.password = 'Required'
+      errors.password = 'Required';
     } //else if(values.password.length < 6 ){
     //    errors.password = 'Atleast 6 char long'
     //}
@@ -23,18 +23,18 @@ const validate = values => {
   };
   
   const warn = values => {
-    const warnings = {}
+    const warnings = {};
     if (values.password < 6) {
       //warnings.password = 'password must be 6 char long'
     }
-    return warnings
+    return warnings;
   };
 class Login extends Component {
     render(){
-      const { handleSubmit, pristine,  submitting } = this.props
+      const { handleSubmit, pristine,  submitting } = this.props;
         let authRedirect = null;
         if(this.props.isAuthenticated){
-            authRedirect = <Redirect to="/dashboard" />
+            authRedirect = <Redirect to="/dashboard" />;
         }
 
         let errorMessage = null;
@@ -84,7 +84,7 @@ class Login extends Component {
   if(this.props.loading){
     form = <RingLoader loaderStyle={{display: "block", margin: "0 auto", borderColor: 'red'}}
     sizeUnit={"px"}
-    size={150}/>
+    size={150}/>;
 }
   return ( <div className={classes.Login}> 
     {authRedirect}
@@ -119,8 +119,8 @@ const mapStateToProps = state => {
         isAuthenticated: state.login.token !==null,
         err: state.login.error,
         loading: state.login.loading,
-    }
-}
+    };
+};
 const mapDispatchToProps = dispatch => {
     return {
       onLogin: (email, password) => dispatch(actions.login(email, password)),

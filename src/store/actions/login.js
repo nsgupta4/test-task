@@ -31,8 +31,8 @@ export const setUserFail = (error) => {
     return{
         type: actionTypes.AUTH_USER_FAIL,
         error: error,
-    }
-}
+    };
+};
 export const authUserFail = (error) => {
     return {
         type: actionTypes.AUTH_USER_FAIL,
@@ -60,34 +60,34 @@ export const setUserDetails = (userData) => {
         .then(response=> {
             //dispatch(setUserSuccess(response.data.name));
             //localStorage.setItem('name',response.data.name);
-            console.log('All set');
+           // console.log('All set');
         })
         .catch(error => {
             dispatch(setUserFail(error));
         });
     };
-}
+};
 export const getUserDetails = (token, email) => {
     return dispatch => {
         const queryParams = '?auth=' + token + '&orderBy="email"&equalTo="' + email + '"';
         axios.get('https://test-task-2ae5b.firebaseio.com/userdetails.json' + queryParams)
         .then(response => {
-            console.log('first',response.data);
+            //console.log('first',response.data);
            const newDetails = [];
           for(let key in response.data){
             localStorage.setItem('userKey', key);
               newDetails.push({
                   ...response.data[key],
-              })
+              });
           }
-                console.log('second',newDetails[0].username, newDetails[0].name);
+                //console.log('second',newDetails[0].username, newDetails[0].name);
                 
             dispatch(getUserDetailsSuccess(newDetails[0].username, newDetails[0].name));
         })
         .catch(err=> {
-            console.log(err);
+           // console.log(err);
             dispatch(getUserDetailsFail(err.response.data.error));
-        })
+        });
     };
 };
 export const signUp = (email, password, name, username, sex) => {
@@ -102,11 +102,11 @@ export const signUp = (email, password, name, username, sex) => {
             email: email,
             password: password,
             returnSecureToken: true,
-        }
+        };
         let url = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyBxSji4t4TnT_eaD8YPOZNK6cMEK3Bn4Qs';
         axios.post(url, authData)
         .then(response => {
-            console.log(response);
+            //console.log(response);
             const expirationDate = new Date(new Date().getTime() + response.data.expiresIn * 1000 );
             localStorage.setItem('token', response.data.idToken);
             localStorage.setItem('expirationDate', expirationDate);
@@ -124,9 +124,9 @@ export const signUp = (email, password, name, username, sex) => {
             dispatch(setUserDetails(userInfo));
         })
         .catch(err => {
-            console.log(err);
-            dispatch(authFail(err.response.data.error))
-        })
+            //console.log(err);
+            dispatch(authFail(err.response.data.error));
+        });
     };
 };
 export const login = (email, password) => {
@@ -136,11 +136,11 @@ export const login = (email, password) => {
             email: email,
             password: password,
             returnSecureToken: true,
-        }
+        };
         let url = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=AIzaSyBxSji4t4TnT_eaD8YPOZNK6cMEK3Bn4Qs';
         axios.post(url, authData)
         .then(response => {
-            console.log(response);
+            //console.log(response);
             const expirationDate = new Date(new Date().getTime() + response.data.expiresIn * 1000 );
             localStorage.setItem('token', response.data.idToken);
             localStorage.setItem('expirationDate', expirationDate);
@@ -151,8 +151,8 @@ export const login = (email, password) => {
             dispatch(getUserDetails(response.data.idToken, email));
         })
         .catch(error => {
-            dispatch(authFail(error.response.data.error))
-        })
+            dispatch(authFail(error.response.data.error));
+        });
     };
 };
 export const logout = () => {
@@ -170,7 +170,6 @@ export const checkAuthTimeout = (expirationTime) => {
     return dispatch => {
         setTimeout(()=> {
             dispatch(logout());
-            
         }, expirationTime * 1000 );
     };
 };
@@ -218,9 +217,9 @@ export const authCheckState = () => {
           }else {
               const userId = localStorage.getItem('userId');
               localStorage.removeItem('userName');
-              dispatch(getUserDetails(localStorage.getItem('token'),localStorage.getItem('email')));
               dispatch(authSuccess(token, userId));
-              dispatch(checkAuthTimeout(expirationDate.getTime() - new Date().getTime()/ 1000 ));
+              dispatch(checkAuthTimeout((expirationDate.getTime() - new Date().getTime())/ 1000 ));
+              dispatch(getUserDetails(localStorage.getItem('token'),localStorage.getItem('email')));
           }
         } 
     };
@@ -254,12 +253,12 @@ export const updateProfile = (postData) =>{
         axios.patch('https://test-task-2ae5b.firebaseio.com/userdetails/' + queryParams, postData)
         .then(response=> {
             dispatch(updateProfileSuccess(message));
-            console.log(response);
+            //console.log(response);
             dispatch(getUserDetails(token, email));
         })
         .catch(error => {
             dispatch(updateProfileFail(error));
-            console.log(error);
+            //console.log(error);
         });
     };
 };
@@ -287,17 +286,17 @@ export const updatePassword = (password) => {
             idToken: localStorage.getItem('token'),
             password: password,
             returnSecureToken: true,
-        }
+        };
         let url = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/setAccountInfo?key=AIzaSyBxSji4t4TnT_eaD8YPOZNK6cMEK3Bn4Qs';
         axios.post(url, authData)
         .then(response => {
-            console.log(response.data);
+            //console.log(response.data);
             dispatch(updatePasswordSuccess());
             dispatch(logout());
         })
         .catch(error => {
-            console.log(error.response.data.error);
-            dispatch(updatePasswordFail(error.response.data.error))
-        })
+            //console.log(error.response.data.error);
+            dispatch(updatePasswordFail(error.response.data.error));
+        });
     };
 };

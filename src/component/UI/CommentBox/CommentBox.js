@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import classes from './CommentBox.css';
-import Aux from '../../../hoc/Aux';
 import { connect } from 'react-redux';
 import * as actions from '../../../store/actions/index';
 class CommentBox extends Component{
@@ -20,17 +19,17 @@ class CommentBox extends Component{
           name: this.props.name,
       }
     });
-    console.log('In Comment BOx', this.state.commentData, this.props.commentData);
+    //console.log('In Comment BOx', this.state.commentData, this.props.commentData);
    }
    showCommentHandler = () => {
-       this.setState({hide: !this.state.hide, message: ''})
+       this.setState({hide: !this.state.hide, message: ''});
     let comments = [];
     for(let key in this.props.commentData){
         comments.push({
             comment:this.props.commentData[key].comment,
             name: this.props.commentData[key].name,
             id: key,        
-        })
+        });
     }
     if(comments.length<=0){
         this.setState({message:"No comments to show"});
@@ -56,7 +55,7 @@ class CommentBox extends Component{
         
     });
     this.setState({out:output});
-    console.log('In Comment BOx show handler',this.props.commentData, comments, this.state.out);
+    //console.log('In Comment BOx show handler',this.props.commentData, comments, this.state.out);
 }
     render(){
     return (

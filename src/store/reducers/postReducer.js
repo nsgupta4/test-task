@@ -44,6 +44,13 @@ const fetchPostSuccess = (state, action) => {
         myPost: action.myPost,
     });
 };
+const fetchPostSearchedSuccess = (state, action) => {
+    return updateObject(state, {
+        posts: action.posts,
+        error: null,
+        loading: false,
+    });
+};
 const fetchPostFail = (state, action) => {
     return updateObject(state, {
         error: action.error,
@@ -54,7 +61,7 @@ const deletePost = (state, action) => {
     return updateObject(state, {
         error: action.error,
         loading: true,
-    })
+    });
 };
 const deletePostSuccess = (state, action) => {
     return updateObject(state,{
@@ -86,8 +93,8 @@ const postLikedFail = (state, action) => {
 const fetchLikesSuccess = (state, action) => {
     return updateObject(state,{
         count:action.count,
-    })
-}
+    });
+};
 const fetchLikesFail = (state, action) => {
     return updateObject(state,{
         error: action.error,
@@ -119,6 +126,7 @@ const reducer = (state = initialState, action) => {
         case actionTypes.ADD_POST_FAIL: return addPostFail(state, action);
         case actionTypes.FETCH_POST: return fetchPost(state, action);
         case actionTypes.FETCH_POST_SUCCESS: return fetchPostSuccess(state, action);
+        case actionTypes.FETCH_POST_SEARCHED_SUCCESS: return fetchPostSearchedSuccess(state, action);       
         case actionTypes.FETCH_POST_FAIL: return fetchPostFail(state,action);
         case actionTypes.DELETE_POST: return deletePost(state, action);
         case actionTypes.DELETE_POST_SUCCESS: return deletePostSuccess(state, action);

@@ -6,7 +6,7 @@ const initialState = {
     users: [],
     error: null,
     loading: false,
-}
+};
 const getUsersStart = (state, action) => {
     return updateObject(state, {
         error: null,

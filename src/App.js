@@ -9,25 +9,28 @@ import './App.css';
 import Logout from './containers/Auth/Logout';
 import * as actions from './store/actions/index';
 import dashboard from './containers/dashboard/dashboard';
-import profile from './component/profile/profile';
-
+import Profile from './component/profile/profile';
+import Product from './containers/dashboard/Products/Products';
 class App extends Component {
   componentDidMount(){
     this.props.onTryAutoSignup();
   }
   render() {
-    let routes = (<Switch>
-      <Route path="/login" component={Login} />
-      <Route path="/signup" component={Signup} />
-      <Redirect path="/" to="/login" />
+    let routes = (
+      <Switch>
+        <Route path="/login" component={Login} />
+        <Route path="/signup" component={Signup} />
+        <Route path="/product" component={Product}/>
+        <Redirect path="/" to="/login" />
       </Switch>
     );
     if(this.props.isAuthenticated){
      routes = (<Switch>
       <Route path="/dashboard" component={dashboard} />
+      <Route path="/dashboard/profile" component={Profile} />
       <Route path="/logout" component={Logout} />
       <Redirect path="/" to="/dashboard" /> 
-      </Switch>)
+      </Switch>);
     }
     return (
       <div>
@@ -41,8 +44,8 @@ class App extends Component {
 const mapStateToProps = state => {
   return {
     isAuthenticated: state.login.token !== null ,
-  }
-}
+  };
+};
 
 const mapDispatchToProps = dispatch => {
   return {

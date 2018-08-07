@@ -6,53 +6,53 @@ import { Field, reduxForm, } from 'redux-form';
 import {RingLoader} from 'react-spinners';
 import classes from './Signup.css';
 const validate = values => {
-  const errors = {}
+  const errors = {};
   if (!values.name) {
-    errors.name = 'Required'
+    errors.name = 'Required';
   } else if (values.name.length > 15) {
-    errors.name = 'Must be 15 characters or less'
+    errors.name = 'Must be 15 characters or less';
   }
   if (!values.username) {
-    errors.username = 'Required'
+    errors.username = 'Required';
   } else if (values.username.length > 15) {
-    errors.username = 'Must be 15 characters or less'
+    errors.username = 'Must be 15 characters or less';
   }
   if (!values.email) {
-    errors.email = 'Required'
+    errors.email = 'Required';
   } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-    errors.email = 'Invalid email address'
+    errors.email = 'Invalid email address';
   }
   if (!values.password) {
-    errors.password = 'Required'
+    errors.password = 'Required';
   }
   if(values.password < 6){
-    errors.password = 'password must be 6 char long'
+    errors.password = 'password must be 6 char long';
   }
   if(!values.confirmPassword){
-    errors.confirmPassword = 'Required'
+    errors.confirmPassword = 'Required';
   }else if(values.password !== values.confirmPassword){
-    errors.confirmPassword = 'Password Must be same'
+    errors.confirmPassword = 'Password Must be same';
   }
-  return errors
-}
+  return errors;
+};
 
 const warn = values => {
-  const warnings = {}
+  const warnings = {};
   if (values.password <= 6) {
-    warnings.password = 'password should be atleast be 6 char...'
+    warnings.password = 'password should be atleast be 6 char...';
   }
-  return warnings
+  return warnings;
 };
 
 class Signup extends Component {
-    state ={
-        isSignup: true,
-    }
     
+  state = {
+      isSignup: true,
+  }
     render(){
         let authRedirect = null;
         if(this.props.isAuthenticated){
-            authRedirect = <Redirect to="/dashboard" />
+            authRedirect = <Redirect to="/dashboard" />;
         }
         let errorMessage = null;
         if(this.props.err){
@@ -63,7 +63,7 @@ class Signup extends Component {
   const g = (values) =>{
       this.props.onSignup(values.email, values.password, values.name, values.username, values.sex);
   };
-  const { handleSubmit, pristine,  submitting } = this.props
+  const { handleSubmit, pristine,  submitting } = this.props;
   const renderField = ({ input, label, type, meta: { touched, error, warning } }) => (
     <div>
       <label className={classes.Label}>{label}</label>
@@ -132,7 +132,7 @@ class Signup extends Component {
 if(this.props.loading){
   form = <RingLoader loaderStyle={{display: "block", margin: "0 auto", borderColor: 'red'}}
   sizeUnit={"px"}
-  size={150}/>
+  size={150}/>;
 }
 return ( 
       <div className={classes.Signup}> 
@@ -166,8 +166,8 @@ const mapStateToProps = state => {
         isAuthenticated: state.login.token !==null,
         err: state.login.error,
         loading: state.login.loading
-    }
-}
+    };
+};
 
 const mapDispatchToProps = dispatch => {
     return {

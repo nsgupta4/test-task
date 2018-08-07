@@ -15,8 +15,13 @@ export {
     updatePost,
     postLiked,
     addComment,
+    fetchPostSearched,
 } from './posts';
 
 export {
     getUsers,
 } from './users';
+
+export {
+    fetchProducts,
+} from './Products';

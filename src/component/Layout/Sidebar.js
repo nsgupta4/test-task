@@ -2,7 +2,8 @@ import React from 'react';
 import classes from './Sidebar.css';
 import Image from '../../assets/userDefault.png';
 const Sidebar = (props) => {
-    console.log('history');
+    const { changed, my, profileClicked, uname } = props;
+    //console.log('history');
     return (
        
         <div className={classes.Sidebar}>
@@ -10,10 +11,10 @@ const Sidebar = (props) => {
             
            <img src={Image} alt="Profile" className={classes.Image}/>   
              </div>
-             <p className={classes.Links}>Welcome! {props.uname}</p>
-             <p><a onClick={props.changed}className={classes.Link}>Home</a></p>
-            <p><a  onClick={props.my}  className={classes.Link}>My Posts</a></p>
-           <a onClick={props.profileClicked} className={classes.Link} > Profile</a>
+             <p className={classes.Links}>Welcome! {uname}</p>
+             <p><a onClick={changed}className={classes.Link}>Home</a></p>
+            <p><a  onClick={my}  className={classes.Link}>My Posts</a></p>
+           <a onClick={profileClicked} className={classes.Link} > Profile</a>
      
      </div>      
         

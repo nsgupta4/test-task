@@ -36,10 +36,10 @@ const post = (props) => {
     //console.log('In postData', props.postData, posts);
     //console.log(posts.content.indexOf(props.query));
     const postOutput = posts.map(ig=>{
-        return (<Aux><span 
+        return (<span 
         key={ig.date}
         > {ig.content} </span>
-    </Aux>)
+    );
      });
     
      
@@ -64,18 +64,18 @@ const post = (props) => {
         })} */
         var filtered = (props.filteredPost.map((ig,index)=>{
             return (
-            <React.Fragment>
+            <React.Fragment key={index}>
+                <a onClick={()=>props.fetchPostSearched(ig.id)}><span key={index}>
+                    {ig.postData['username']}
+                </span></a> &nbsp;&nbsp;&nbsp;
                 <span 
-            key={ig.time} style={{
-                margin: '0 8px',
-                padding: '5px',
-                border: '1px solid #ccc',}}
-        > {ig['content']}</span>
-        <span key={index}>
-                {ig['username']}
-        </span><br/><br/>
+                    style={{
+                    margin: '0 8px',
+                    padding: '5px',
+                    border: '1px solid #ccc',}}
+                > {ig.postData['content']}</span><br/><br/>
         </React.Fragment>
-    )
+    );
         }) );
        // var filt = [];
        // for(let key in newF){
@@ -89,7 +89,7 @@ const post = (props) => {
    /* for(let index in props.filteredPost){
         return <span>{props.filteredPost[index].content}</span>
     }*/
-   // console.log('In post filtered', props.filteredPost,filtered);
+   //console.log('In post filtered', props.filteredPost,filtered);
     }
     //console.log('In post filtered', props.filteredPost, filtered);
     return (
@@ -118,35 +118,4 @@ const post = (props) => {
                 </Aux>
     );
 };
-export default post; 
-
-/*
-const order = (props) => {
-    const ingredients = [];
-    for(let ingredientName in props.ingredients){
-        ingredients.push({
-            name: ingredientName,
-            amount: props.ingredients[ingredientName],
-        });
-    }
-    const ingredientOutput = ingredients.map(ig=>{
-       return <span 
-       key={ig.name}
-       style={{
-           textTransform: 'capitalize',
-            display: 'inline-block',
-            margin: '0 8px',
-            padding: '5px',
-            border: '1px solid #ccc',
-        }}
-       >{ig.name} ({ig.amount}) </span>
-    })
-    return (
-    <div className={classes.Order}>
-        <p>Ingredients: {ingredientOutput} </p>
-        <p>Price:<strong>USD: {props.price.toFixed(2)} </strong></p>
-    </div>
-    );
-    
-};
-export default order;  */
+export default post;

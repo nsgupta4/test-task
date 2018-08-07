@@ -6,35 +6,31 @@ import Posts from './Posts/Posts';
 import Profile from '../../component/profile/profile';
 import * as actions from '../../store/actions/index';
 import { RingLoader } from 'react-spinners';
-import { Redirect, withRouter } from 'react-router-dom';
+import { Redirect, withRouter} from 'react-router-dom';
 import RightSideBar from '../../component/Layout/rightSideBar';
-import post from '../../component/dashboard/post/Post';
+//import post from '../../component/dashboard/post/Post';
 class dashboard extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
             //myPosts: false,
             profile: false,
             //users: this.props.users,
             //clicked: false,
-        }
+        };
         //this.routeFunction = this.routeFunction.bind(this); 
     }
 componentDidMount(){
     this.fetchUsers();
     this.props.onFetchHandler(this.props.token, this.props.userId, this.state.myPosts);
 }
-    handleChange = () => {  
-        //console.log(selectorFiles);
-        alert('this looks ugly');
-    }
 
     onMyPostClick = () =>{ 
-        this.setState({
-            profile: false,
-        })
-        this.props.onFetchHandler(this.props.token, this.props.userId, true);
-        console.log('In MyPOSt',this.props.posts,this.props.userId);
+    this.setState({
+        profile: false,
+    });
+    this.props.onFetchHandler(this.props.token, this.props.userId, true);
+    //console.log('In MyPOSt',this.props.posts,this.props.userId);
     }
     
     onHomeClick = () => {
@@ -49,18 +45,18 @@ componentDidMount(){
     }
     
     onProfileClick = () => {
-        console.log('inside route',this.state.profile)
+        //console.log('inside route',this.state.profile);
         this.props.history.push('/dashboard/profile');
         this.setState({profile: !this.state.profile});
     }
     fetchUsers = () => {
-        console.log('Inside fetchUsers');
+        //console.log('Inside fetchUsers');
         this.props.onFetchUsers();
     }
     showUser = (userId, userName) => {
         this.setState({
             profile:false,
-        })
+        });
         this.props.history.push('/dashboard/'+userName);
         let token = localStorage.getItem('token');
         localStorage.setItem('userName', userName);
@@ -69,20 +65,20 @@ componentDidMount(){
     render(){
         let redirect = null;
         if(!this.props.isAuthenticated){
-            redirect = <Redirect path="/"/>
+            redirect = <Redirect path="/"/>;
         }
         let view = ( this.props.posts ? <Posts myPost={this.props.myPost} showUsers/>: <Posts />);
         if(this.props.loading){
             view =  <RingLoader loading={this.props.loading} 
             loaderStyle={{display: "block", margin: "0 auto", borderColor: 'red'}}
             sizeUnit={"px"}
-            size={150}/>
+            size={150}/>;
         }
         if(this.state.profile){
-            view = <Profile />
+            view = <Profile />;
         }
         if(this.state.clicked){
-            view = <Posts myPost={this.state.myPosts}/>
+            view = <Posts myPost={this.state.myPosts}/>;
         }
         return(
             <div className="row">
@@ -127,8 +123,8 @@ const mapDispatchToProps = dispatch => {
         onFetchUsers: () => dispatch(actions.getUsers()),
         onFetchHandler: (token, userId, myPost) => dispatch(actions.fetchPost(token, userId, myPost)),
         onShowUsers: (token, userId, myPost, userPost) => dispatch(actions.fetchPost(token, userId, myPost, userPost)),
-    }
-}
+    };
+};
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(dashboard));
 
 

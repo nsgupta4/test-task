@@ -1,39 +1,37 @@
 import React, { Component } from 'react';
 import * as actions from '../../store/actions';
 import { connect } from 'react-redux';
-import { Redirect, withRouter } from 'react-router-dom';
-import { Field, reduxForm, } from 'redux-form'
+import { Redirect } from 'react-router-dom';
+import { Field, reduxForm, } from 'redux-form';
 import { RingLoader} from 'react-spinners';
 import classes from './Login.css';
 
 const validate = values => {
-    const errors = {}
+  const errors = {};
 
     if (!values.name) {
-      errors.name = 'Required'
+      errors.name = 'Required';
     } 
     if (!values.username) {
-      errors.username = 'Required'
-    } //else if(values.password.length < 6 ){
-    //    errors.password = 'Atleast 6 char long'
-    //}
+      errors.username = 'Required';
+    }
     if (!values.password) {
-      errors.password = 'Required'
+      errors.password = 'Required';
     }
     if(!values.confirmPassword){
-      errors.confirmPassword = 'Required'
+      errors.confirmPassword = 'Required';
     }else if(values.password !== values.confirmPassword){
-      errors.confirmPassword = 'Password Must be same'
+      errors.confirmPassword = 'Password Must be same';
     }
     return errors;
   };
   
   const warn = values => {
-    const warnings = {}
+    const warnings = {};
     if (values.password < 6) {
-      warnings.confirmPassword = 'Too Weak'
+      warnings.confirmPassword = 'Too Weak';
     }
-    return warnings
+    return warnings;
   };
 class Profile extends Component {
  state = {
@@ -45,13 +43,13 @@ class Profile extends Component {
   onClickChangePassword = () => {
     this.setState({
       clicked: true,
-    })
+    });
   }
     render(){
-      const { handleSubmit, pristine,  submitting } = this.props
+      const { handleSubmit, pristine,  submitting } = this.props;
         let authRedirect = null;
         if(this.props.isAuthenticated){
-            authRedirect = <Redirect to="/dashboard" />
+            authRedirect = <Redirect to="/dashboard" />;
         }
         let errorMessage = null;
         if(this.props.message){
@@ -62,7 +60,7 @@ class Profile extends Component {
 
   const g = (values) =>{
     if(this.state.clicked){
-      this.props.onChangePassword(values.password)
+      this.props.onChangePassword(values.password);
     }else{
       this.props.onUpdateProfile({
         name: values.name,
@@ -71,8 +69,6 @@ class Profile extends Component {
     }
   };
 
-  
-  
   const renderField = ({ input, label, type, meta: { touched, error, warning } }) => (
     <div>
       <label className={classes.Label}>{label}</label>
@@ -133,7 +129,7 @@ Change
 
 );
   if(this.props.loading){
-    form = <RingLoader />
+    form = <RingLoader />;
 }else if(this.state.clicked){
   form = changeForm;
 }
@@ -175,8 +171,8 @@ const mapStateToProps = state => {
         loading: state.login.loading,
         initialValues: state.login,
         message: state.login.message,
-    }
-}
+    };
+};
 const mapDispatchToProps = dispatch => {
     return {
       onUpdateProfile: (updatedData) => dispatch(actions.updateProfile(updatedData)),

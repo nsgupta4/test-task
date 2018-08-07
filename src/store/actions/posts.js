@@ -24,12 +24,12 @@ export const addPost = (token, postData) =>{
         axios.post('https://test-task-2ae5b.firebaseio.com/users.json?auth=' + token, postData)
         .then(response=> {
             dispatch(addPostSuccess());
-            console.log(response);
+            //console.log(response);
             dispatch(fetchPost(token, userId));
         })
         .catch(error => {
             dispatch(addPostFail(error));
-            console.log(error);
+            //console.log(error);
         });
     };
 };
@@ -37,14 +37,14 @@ export const addPost = (token, postData) =>{
 export const fetchPost = (token, userId, myPost, userPost) => {
     return dispatch => {
         let token = localStorage.getItem('token');
-        let url = 'https://test-task-2ae5b.firebaseio.com/users.json'
+        let url = 'https://test-task-2ae5b.firebaseio.com/users.json';
         let queryParams = '?auth=' + token;
         if(myPost){
-            url = 'https://test-task-2ae5b.firebaseio.com/users.json'
+            url = 'https://test-task-2ae5b.firebaseio.com/users.json';
             queryParams = '?auth=' + token + '&orderBy="userId"&equalTo="'+userId+'"';
         }
         if(userPost){
-            url = 'https://test-task-2ae5b.firebaseio.com/users.json'
+            url = 'https://test-task-2ae5b.firebaseio.com/users.json';
             queryParams = '?auth=' + token + '&orderBy="userId"&equalTo="'+userId+'"';
         }
         axios.get(url + queryParams)
@@ -56,7 +56,7 @@ export const fetchPost = (token, userId, myPost, userPost) => {
                     id: key,
                 });
             }
-            console.log('Inside action',response.data, fetchedPost); 
+            //console.log('Inside action',response.data, fetchedPost); 
             dispatch(fetchPostSuccess(fetchedPost,myPost));
         })
         .catch(err=>{
@@ -79,8 +79,8 @@ export const fetchPostFail = (error) => {
     return {
         type: actionTypes.FETCH_POST_FAIL,
         error: error,
-    }
-}
+    };
+};
 
 export const deletePostStart = () => {
     return {
@@ -113,7 +113,7 @@ export const deletePost = (token, key, userId) => {
             dispatch(deletePostFail(err.response.data.error));
     });
     };
-}
+};
 
 export const updatePostStart = () => {
     return {
@@ -139,12 +139,12 @@ export const updatePost = (token, key ,postData) =>{
         axios.patch('https://test-task-2ae5b.firebaseio.com/users/' + queryParams, postData)
         .then(response=> {
             dispatch(updatePostSuccess(response.data));
-            console.log(response);
+            //console.log(response);
             dispatch(fetchPost(token, userId, true));
         })
         .catch(error => {
             dispatch(updatePostFail(error));
-            console.log(error);
+            //console.log(error);
         });
     };
 };
@@ -174,12 +174,12 @@ export const postLiked = (postId ,postData) =>{
         axios.patch('https://test-task-2ae5b.firebaseio.com/users/' + queryParams, postData)
         .then(response=> {
             dispatch(postLikedSuccess(response.data));
-            console.log(response);
+            //console.log(response);
             dispatch(fetchPost(token, userId));
         })
         .catch(error => {
             dispatch(postLikedFail(error));
-            console.log(error);
+            //console.log(error);
         });
     };
 };
@@ -199,7 +199,7 @@ export const fetchLikesFail = (error) =>{
 export const fetchLikes = () => {
     return dispatch => {
         let token = localStorage.getItem('token');
-        let url = 'https://test-task-2ae5b.firebaseio.com/users.json'
+        let url = 'https://test-task-2ae5b.firebaseio.com/users.json';
         let queryParams = '?auth=' + token;
         axios.get(url + queryParams)
         .then(response => {
@@ -210,14 +210,14 @@ export const fetchLikes = () => {
                     id: key,
                 });
             } 
-            console.log('Inside action',response.data, fetchedPost); 
+            //console.log('Inside action',response.data, fetchedPost); 
             dispatch(fetchLikesSuccess());
         })
         .catch(err=>{
             dispatch(fetchLikesFail(err));
     });
     };  
-}
+};
 
 export const addCommentStart = () => {
     return {
@@ -245,12 +245,41 @@ export const addComment = (postId, commentData) =>{
         axios.post('https://test-task-2ae5b.firebaseio.com/users/' + queryParams, commentData)
         .then(response=> {
             dispatch(addCommentSuccess());
-            console.log(response);
+            //console.log(response);
             dispatch(fetchPost(token, userId));
         })
         .catch(error => {
             dispatch(addCommentFail(error));
-            console.log(error);
+            //console.log(error);
         });
+    };
+};
+export const fetchPostSearchedSuccess = (posts) =>{
+    return {
+        type: actionTypes.FETCH_POST_SEARCHED_SUCCESS,
+        posts: posts,
+        error: null,
+    };
+};
+export const fetchPostSearched = (postId) => {
+    return dispatch => {
+        let token = localStorage.getItem('token');
+        let url = 'https://test-task-2ae5b.firebaseio.com/users/';
+        let queryParams = postId + '.json?auth=' + token;
+        axios.get(url + queryParams)
+        .then(response => {
+         let fetchedPost = [];
+                fetchedPost.push({
+                    postData: response.data.postData,
+                    commentData: response.data.commentData,
+                    id: postId
+                });
+            
+            //console.log('Inside action 1',response.data, fetchedPost); 
+            dispatch(fetchPostSearchedSuccess(fetchedPost));
+        })
+        .catch(err=>{
+            dispatch(fetchPostFail(err));
+    });
     };
 };

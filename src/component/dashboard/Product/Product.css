@@ -8,6 +8,11 @@
     box-sizing: border-box;
     cursor: pointer;
 }
+.Image {
+    width: 200px;
+    padding: 16px;
+    cursor: pointer;
+}
 
 .Product:hover,
 .Product:active {

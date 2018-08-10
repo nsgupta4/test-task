@@ -4,11 +4,12 @@ import classes from './Product.css';
 
 const product = (props) => (
     <article className={classes.Product} onClick={props.clicked}>
-        <img alt="Product"/>
+        <img src={props.img} alt="Product" className={classes.Image}/>
         <div>
             <div className={classes.Name}>{props.Name}</div>
         </div>
-        <div>{props.Price}</div>
+        <p>{props.title}</p>
+        <div>{props.Price}$</div>
     </article>
 );
 

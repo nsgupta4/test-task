@@ -9,15 +9,19 @@ class Layout extends Component {
         super(props);
         this.state = {
             showSideDrawer: false,
+            cartLength: 0,
         };
     }
-sideDrawerClosedHandler = () => {
+    sideDrawerClosedHandler = () => {
         this.setState({showSideDrawer:false});
-}
+    }
     sideDrawerToggleHandler = () => {
         this.setState( (prevState) => {
             return {showSideDrawer: !prevState.showSideDrawer};
         });
+    }
+    calculateCartLength = () => {
+        this.setState({cartLength: this.props.cart.length});
     }
     render(){
         return( <Aux>
@@ -25,7 +29,7 @@ sideDrawerClosedHandler = () => {
             username={this.props.name}
             isAuth={this.props.isAuthenticated}
             drawerToggleClicked={this.sideDrawerToggleHandler}
-
+            cartLength={this.props.cartLength}
             />
             <SideDrawer 
             isAuth={this.props.isAuthenticated}
@@ -40,7 +44,8 @@ sideDrawerClosedHandler = () => {
 const mapStateToProps = state => {
     return {
         isAuthenticated: state.login.token !== null ,
-        name: state.login.username, 
+        name: state.login.username,
+        cartLength: state.item.cartLength, 
     };
 };
 export default connect(mapStateToProps)(Layout);

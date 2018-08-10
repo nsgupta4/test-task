@@ -11,9 +11,14 @@ import * as actions from './store/actions/index';
 import dashboard from './containers/dashboard/dashboard';
 import Profile from './component/profile/profile';
 import Product from './containers/dashboard/Products/Products';
+import Checkout from './containers/dashboard/Products/Checkout/Checkout';
+import AddProduct from './containers/Product/AddProduct';
 class App extends Component {
   componentDidMount(){
     this.props.onTryAutoSignup();
+  }
+  componentDidUpdate(){
+    console.log('in CompoenntDidupdate');
   }
   render() {
     let routes = (
@@ -21,6 +26,8 @@ class App extends Component {
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
         <Route path="/product" component={Product}/>
+        <Route path="/checkout" component={Checkout}/>
+        <Route path="/addProduct" component={AddProduct}/>
         <Redirect path="/" to="/login" />
       </Switch>
     );
@@ -29,6 +36,8 @@ class App extends Component {
       <Route path="/dashboard" component={dashboard} />
       <Route path="/dashboard/profile" component={Profile} />
       <Route path="/logout" component={Logout} />
+      <Route path="/product" component={Product}/>
+      <Route path="/checkout" component={Checkout}/>
       <Redirect path="/" to="/dashboard" /> 
       </Switch>);
     }

@@ -1,0 +1,14 @@
+.Add{
+    margin: 10px auto;
+    width: 100%;
+    text-align: center;
+    background: transparent;
+    padding: 20px;
+}
+
+
+@media (min-width: 600px){
+    .Add{
+        width: 500px;
+    }
+}

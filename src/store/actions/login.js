@@ -162,6 +162,7 @@ export const logout = () => {
     localStorage.removeItem('email');
     localStorage.removeItem('postId');
     localStorage.removeItem('userKey');
+    localStorage.removeItem('userName');
     return {
         type: actionTypes.AUTH_LOGOUT,
     };

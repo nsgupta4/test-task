@@ -24,4 +24,7 @@ export {
 
 export {
     fetchProducts,
+    purchaseInit,
+    removeCartItem,
+    addProduct,
 } from './Products';

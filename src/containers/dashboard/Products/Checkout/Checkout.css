@@ -1,0 +1,15 @@
+.cartList{
+    width: 100%;
+border-collapse: collapse;
+box-shadow: 0 0 3px 2px rgba(black, .15);
+}
+.Cart{
+    width: 100%;
+    padding: 16px;
+    text-align: center;
+    border: 1px solid #eee;
+    box-shadow: 0 2px 3px #ccc;
+    margin: 10px;
+    box-sizing: border-box;
+    cursor: pointer;
+}

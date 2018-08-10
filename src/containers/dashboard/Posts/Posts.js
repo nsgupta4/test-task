@@ -95,7 +95,7 @@ render () {
         )));
         let filtered = [];
             fPosts.map((post) => {
-            if(post.postData.content.indexOf(this.state.query)=== -1){ 
+            if(post.postData.content.toLowerCase().indexOf(this.state.query.toLowerCase())=== -1){ 
             return null;
             }
            return filtered.push(post);

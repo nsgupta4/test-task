@@ -1,14 +1,20 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
+import Modal from '../../../../component/UI/Modal/Modal';
 import * as actions from '../../../../store/actions/index';
 import classes from './Checkout.css';
 class Checkout extends Component{
     state = {
         message:'',
+        clicked: false,
     }
     orderPlaced = () => {
         let message = "Your order is placed";
         this.setState({message: message});
+    }
+    modalCloseHandler = () => {
+        this.setState({clicked: false});
+        this.props.location;
     }
     render(){
         //console.log('In checkout',this.props.cart);
@@ -47,8 +53,10 @@ class Checkout extends Component{
             <div className="col-sm-2"> Price</div>
             <div className="col-sm-2"> Quantity</div>
             </div></div> : null}
-                <div className="col-sm-12">
+                <div className="col-sm-12" onClick={()=>this.setState({clicked: true})}>
                {view}
+               <Modal show={this.state.clicked} clicked={this.modalCloseHandler}>
+               </Modal>
                </div>
                <div>
                {button}
